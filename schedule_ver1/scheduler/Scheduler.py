@@ -30,7 +30,7 @@ class Scheduler:
             for path in paths:
                 print(path)
         self.put_flows_to_time_table()
-      ####
+      
         
         
     def genarate_first_link_time(self, flow, path):
@@ -82,12 +82,11 @@ class Scheduler:
                     wait_flag = False
                     self.wait_to_schedule.append(flow)    
 
-            print(f"---------{flow}----------這裡印一次時間表---------{flow}----------")
-            print(f"time_table = ")
-            for (src, dst), time in self.time_table.items():
-                print(f"{(src, dst)}:{time}")
-            print(f"wait_to_schedule = {self.wait_to_schedule}")
-            print(f"----------------------------------------------------------------")
+        print(f"time_table = ")
+        for (src, dst), time in self.time_table.items():
+            print(f"{(src, dst)}:{time}")
+        print(f"wait_to_schedule = {self.wait_to_schedule}")
+        print(f"----------------------------------------------------------------")    
 
     def schedule_middle(self):
         long_path_fail_flows = []
@@ -98,8 +97,8 @@ class Scheduler:
                 for path in paths:
                     if not path.get('Time') :
                             time_list = self.genarate_active_time_slot(previous_path, flow, self.flow_dic[flow]["Size"])
-                            path["Time"] = copy.deepcopy(time_list)
-                    previous_path = copy.deepcopy(path)
+                            path["Time"] = time_list
+                    previous_path = path
 
     def genarate_active_time_slot(self, prev_path, flow, bias):
         time_list = {}

@@ -15,18 +15,16 @@ class Topology:
             with open(links_file, "r") as links_file:
                 for i, line in enumerate(links_file.readlines(), start=1):
                     src, dst = line.strip().split()
-                    link_name = f"link{i}"
-                    self.links[link_name] = {"Src": src, "Dst": dst, "Time":{}}
+                    self.links[(src, dst)] = {}
             
         except:
             raise ValueError(f"Invalid data, please check your \"list.txt\" file")
 
     def create_reverse_links(self):                                                         #建立每個links(topology.links)
         for counter, (link_name, link_data) in enumerate(self.links.items(), start=1):
-            src = link_data["Src"]
-            dst = link_data["Dst"]
-            reverse_link_name = f"link{len(self.links)+counter}"
-            self.reverse_links[reverse_link_name] = {"Src": dst, "Dst": src, "Time":{}}     #建立每個反向links
+            src = link_name[0]
+            dst = link_name[1]
+            self.reverse_links[(dst, src)] = {}     #建立每個反向links
 
         # 合併 reverse_links 到 links
         self.links.update(self.reverse_links)
@@ -40,7 +38,7 @@ class Topology:
         
 
         if links_traversed:
-            self.path_dic[flow_id] = copy.deepcopy(links_traversed)
+            self.path_dic[flow_id] = links_traversed
             # print(f"flow = {flow_id}")
             # print(f"links = {links_traversed}")
         else:
@@ -61,11 +59,10 @@ class Topology:
                 found = True
                 break
 
-            matching_links = [link_name for link_name, link_data in self.links.items() if link_data["Src"] == current_node]
+            matching_links = [link_name for link_name, link_data in self.links.items() if link_name[0] == current_node]
 
             for link_name in matching_links:
-                link_data = self.links[link_name]
-                next_node = link_data["Dst"]
+                next_node = link_name[1]
 
                 if next_node not in visited and next_node not in queue:
                     queue.append(next_node)
@@ -83,7 +80,7 @@ class Topology:
 
         while current_node != src:
             for link_name, link_data in self.links.items():
-                if link_data["Src"] == parent[current_node] and link_data["Dst"] == current_node:
+                if link_name[0] == parent[current_node] and link_name[1] == current_node:
                     path.append(link_name)
                     
                     break
@@ -91,8 +88,8 @@ class Topology:
 
         path.reverse()
         path_content = []
-        for links in path :                                                     #['link1', 'link2', 'link3']
-            path_content.append(self.links[links])
+        for link in path :                                                     #['link1', 'link2', 'link3']
+            path_content.append({"Src":link[0], "Dst":link[1], "Time":{}})
 
         return path_content
 
