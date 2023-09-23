@@ -89,7 +89,7 @@ class Topology:
         path.reverse()
         path_content = []
         for link in path :                                                     #['link1', 'link2', 'link3']
-            path_content.append({"Src":link[0], "Dst":link[1], "Time":{}})
+            path_content.append({"Ingress":link[0], "Egress":link[1], "Time":{}})
 
         return path_content
 
