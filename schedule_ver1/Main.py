@@ -21,7 +21,7 @@ def main():
     # for key, value in topology.path_dic.items():
     #     print(f"{key}: {value}")
 
-    scheduler = Scheduler(topology.flow_dic, topology.path_dic)     #排程
+    scheduler = Scheduler(topology.flow_dic ,topology.links, topology.path_dic)     #排程
     scheduler.scheduling()
 
     # print(f"流字典 : ")

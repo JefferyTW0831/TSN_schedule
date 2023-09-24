@@ -23,10 +23,10 @@ flow_data = {
             "Src": "D1",
             "Dst": "D6",
             "StartTime": 2,
-            "Period": 8,
+            "Period": 10,
             "Times": 8,
             "Size": 2,
-            "Deadline": 8
+            "Deadline": 10
         },
         "F3": {
             "Src": "D1",
@@ -113,10 +113,10 @@ flow_data = {
             "Src": "D7",
             "Dst": "D6",
             "StartTime": 1,
-            "Period": 6,
+            "Period": 12,
             "Times": 8,
             "Size": 3,
-            "Deadline": 6
+            "Deadline": 12
         }
     }
 
