@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from InputFlow import InputFlow
 from scheduler.Scheduler import Scheduler
 from Topology import Topology

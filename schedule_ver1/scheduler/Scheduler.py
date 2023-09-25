@@ -53,16 +53,19 @@ class Scheduler:
         return time_list
 
     def schedule_middle(self):#  未完,要符合流一定要先走到前一個路徑才能走到後一個路徑、在同一條路徑上不能有兩個flow同時佔據(這個規則好難想)
-        time_occupy_list = []
+        link_time_occupy_list = []       # 用來查看link上的占用其況
         common_link = self.classify_links()
         for c_link, c_list in common_link.items():
             for flow in c_list:                    #F1, F2, F3            
                 for flow_name, flow_path in self.flow_paths_dic:
                     for link in flow_path:         #link = {"Ingress", "Egress", "Time"}
                         if c_link[0] == link["Ingress"] and c_link[1] == link["Egress"]:
-                            time_occupy_list = self.genarate_time_slot(self, flow, time_occupy_list)
+                            link_time_occupy_list = self.genarate_time_slot(self, flow, link_time_occupy_list)
 
-    def genarate_time_slot(self, flow, time_occupy_list):
+    def genarate_time_slot(self, flow, link_time_occupy_list):
+        prev_links_occupied = []    # 用來查看flow在先前links所占用的時間點(防止前一個Link還沒傳到 就已經出現在後一個link的情況)
+
+
         
 
 
