@@ -19,8 +19,9 @@ class Scheduler:
         for flow, path in self.flow_paths_dic.items():    #flow = F1, path=[{'Src':'D1', 'Dst':'SW1', 'Time':[]},{},{}]
             self.genarate_first_link_time(flow, path[0])
             self.genarate_last_link_time(flow, path[-1])
-        # self.schedule_middle()
+        self.schedule_middle()
         # self.collision_flows()
+        # print(f"path_dic = {self.flow_paths_dic}")
         print(f"path_dic = ")
         for flow, paths in self.flow_paths_dic.items():
             print(f"{flow}=")
@@ -51,15 +52,38 @@ class Scheduler:
             current_time += period - size
         return time_list
 
-    def schedule_middle(self):#  未完
-        previous_path = {}
-        for flow, paths in self.flow_paths_dic.items():
-            for path in paths:
-                if not path.get('Time'):
-                    if not previous_path[flow]:
-                        previous_path[flow] = []
+    def schedule_middle(self):#  未完,要符合流一定要先走到前一個路徑才能走到後一個路徑、在同一條路徑上不能有兩個flow同時佔據(這個規則好難想)
+        time_occupy_list = []
+        common_link = self.classify_links()
+        for c_link, c_list in common_link.items():
+            for flow in c_list:                    #F1, F2, F3            
+                for flow_name, flow_path in self.flow_paths_dic:
+                    for link in flow_path:         #link = {"Ingress", "Egress", "Time"}
+                        if c_link[0] == link["Ingress"] and c_link[1] == link["Egress"]:
+                            time_occupy_list = self.genarate_time_slot(self, flow, time_occupy_list)
+
+    def genarate_time_slot(self, flow, time_occupy_list):
+        
+
+
+
+
+
+
+    def classify_links(self):
+        common_link = {}
+        for flow_name, flow_path in self.flow_paths_dic.items():
+            for link in flow_path:
+                if not link.get('Time'):
+                    key = (link["Ingress"], link["Egress"])
+                    if key not in common_link:
+                        common_link[(link["Ingress"], link["Egress"])] = []
+                        common_link[(link["Ingress"], link["Egress"])].append(flow_name)
                     else:
-                        previous_path[flow] = path
+                        common_link[(link["Ingress"], link["Egress"])].append(flow_name)
+        print(f"common_link = {common_link}")
+        return common_link
+
 
 
 
@@ -67,14 +91,14 @@ class Scheduler:
 
     def schedule_middle_2(self):
         previous_path = {}
-        for flow, paths in self.flow_paths_dic.items():
-            for path in paths:
-                if not path.get('Time') :
-                    time_list = self.genarate_active_time_slot(previous_path, flow, self.flow_dic[flow]["Size"])
-                    path["Time"] = time_list
-                previous_path = path
-            if self.check_self_constraints(paths) == False:
-                self.wait_to_schedule.append(flow)
+        for flow_name, flow_path in self.flow_paths_dic.items():
+            for link in flow_path:
+                if not link.get('Time') :
+                    time_list = self.genarate_active_time_slot(previous_path, flow_name, self.flow_dic[flow_name]["Size"])
+                    link["Time"] = time_list
+                previous_path = link
+            if self.check_self_constraints(link) == False:
+                self.wait_to_schedule.append(flow_name)
           
 
     def genarate_active_time_slot(self, prev_path, flow, bias):
