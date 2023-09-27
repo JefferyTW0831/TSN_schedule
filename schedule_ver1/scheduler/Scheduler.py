@@ -57,39 +57,48 @@ class Scheduler:
         prev_links_occupied = []            # 用來查看flow在先前links所占用的時間點(防止前一個Link還沒傳到 就已經出現在後一個link的情況)
         common_link = self.classify_links()
         print(f"--------------------------------------------------------------")
-        for c_link, c_list in common_link.items():
-            for flow in c_list:                    # F1, F2, F3            
+        for c_link, c_list in common_link.items():                # F1, F2, F3            
                 for flow_name, flow_path in self.flow_paths_dic.items():
                     for link in flow_path:         # link = {"Ingress", "Egress", "Time"}
                         if link["Time"]:           #如果此Link已經有時間了，那就不用排這個Link，把這個link放到已占用表裡面
-                            for time_list in link["Time"]:
+                            for time_list in link["Time"].keys():
                                 prev_links_occupied.append(time_list) 
                         elif c_link[0] == link["Ingress"] and c_link[1] == link["Egress"]:
 
-                            print(f"{flow}:{link}:{prev_links_occupied}")
-                            self.genarate_active_time_slot(flow, link, prev_links_occupied, link_time_occupy_list)
+                            print(f"{flow_name}:{link}:{prev_links_occupied}")
+                            self.genarate_active_time_slot(flow_name, link, prev_links_occupied, link_time_occupy_list)
                 prev_links_occupied = []
                 print(f"------------------------------------------------------")
 
     
+    def schedule_middle(self):              # 未完,要符合流一定要先走到前一個路徑才能走到後一個路徑、在同一條路徑上不能有兩個flow同時佔據(這個規則好難想)
+        link_time_occupy_list = {}          # 用來查看link上的占用其況
+        prev_links_occupied = []            # 用來查看flow在先前links所占用的時間點(防止前一個Link還沒傳到 就已經出現在後一個link的情況)
+        common_link = self.classify_links()
+        for c_link, c_list in common_link.items():                # F1, F2, F3     
+            sort_list = []
+            sort_list = self.long_path_sorting(c_link)
+                    
+          
+                
+
+    
+    def get_long_path(self, c_link):
+        for flow_name, flow_path in self.flow_paths_dic.items():
 
 
-    def genarate_active_time_slot(self, prev_path, flow, bias):
-        time_list = {}
-        start =  min(prev_path["Time"].keys())+bias
-        period = self.flow_dic[flow]["Period"]
-        times = self.flow_dic[flow]["Times"]
-        size = self.flow_dic[flow]["Size"]
-        current_time = start
-        for _ in range(times):
-            for _ in range(size):
-                time_list[current_time] = flow
-                current_time += 1
-            current_time += period - size
-        return time_list    
+            
+    def genarate_active_time_slot(self, flow, link, prev_links_occupied, link_time_occupy_list):
+        
+        
 
 
         
+
+
+
+
+
 
 
     def classify_links(self):
