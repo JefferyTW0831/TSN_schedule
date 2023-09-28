@@ -1,6 +1,6 @@
 import math
 import copy
-from collections import Counter
+
 class Scheduler:
     def __init__(self, flow_dic, flow_links, flow_paths_dic) :
         self.flow_dic = flow_dic
@@ -68,24 +68,28 @@ class Scheduler:
    
 
     def genarate_active_time_slot(self, link, flow_list):
-        link_time_occupy_list = []          # 用來查看link上的占用其況
+        link_time_occupy_list = []              # 用來查看link上的占用其況
         for flow in flow_list:
             prev_links_occupied = []            # 用來查看flow在先前links所占用的時間點(防止前一個Link還沒傳到 就已經出現在後一個link的情況)
             for time_filled_link in self.flow_paths_dic[flow]:
                 if time_filled_link["Time"]:
                     for time in time_filled_link["Time"].keys():
                         prev_links_occupied.append(time)
-            if link_time_occupy_list:
+            if link_time_occupy_list:           #查看有沒有其他flow已經占用某些時間點
                 for time in link_time_occupy_list:
                     if time not in prev_links_occupied:
                         prev_links_occupied.append(time)
             #print(f"看一下該flow目前排定的link時間的占用情況：{flow} , {prev_links_occupied}")
             for not_filled_link in self.flow_paths_dic[flow]:
                 if not_filled_link["Ingress"] == link[0] and not_filled_link["Egress"] == link[1]:
-                    link_time_occupy_list = self.insert_continuous_values(prev_links_occupied, self.flow_dic[flow]["Size"])
-                    for time in link_time_occupy_list:
+                    print(f"flow = {flow}, in = {link[0]}, E = {link[1]}")
+                    insert_list = (self.insert_continuous_values(prev_links_occupied, self.flow_dic[flow]["Size"]))
+                    for time in insert_list:
+                        link_time_occupy_list.append(time)
                         not_filled_link["Time"][time] = flow
-            break
+                    not_filled_link["Time"] = dict(sorted(not_filled_link["Time"].items()))
+                
+           
 
     def insert_continuous_values(self, sequence, continuous_length):
         sequence = sorted(sequence)
