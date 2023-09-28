@@ -52,54 +52,55 @@ class Scheduler:
             current_time += period - size
         return time_list
 
-    def schedule_middle(self):              # 未完,要符合流一定要先走到前一個路徑才能走到後一個路徑、在同一條路徑上不能有兩個flow同時佔據(這個規則好難想)
-        link_time_occupy_list = {}          # 用來查看link上的占用其況
-        prev_links_occupied = []            # 用來查看flow在先前links所占用的時間點(防止前一個Link還沒傳到 就已經出現在後一個link的情況)
-        common_link = self.classify_links()
-        print(f"--------------------------------------------------------------")
-        for c_link, c_list in common_link.items():                # F1, F2, F3            
-                for flow_name, flow_path in self.flow_paths_dic.items():
-                    for link in flow_path:         # link = {"Ingress", "Egress", "Time"}
-                        if link["Time"]:           #如果此Link已經有時間了，那就不用排這個Link，把這個link放到已占用表裡面
-                            for time_list in link["Time"].keys():
-                                prev_links_occupied.append(time_list) 
-                        elif c_link[0] == link["Ingress"] and c_link[1] == link["Egress"]:
-
-                            print(f"{flow_name}:{link}:{prev_links_occupied}")
-                            self.genarate_active_time_slot(flow_name, link, prev_links_occupied, link_time_occupy_list)
-                prev_links_occupied = []
-                print(f"------------------------------------------------------")
-
     
     def schedule_middle(self):              # 未完,要符合流一定要先走到前一個路徑才能走到後一個路徑、在同一條路徑上不能有兩個flow同時佔據(這個規則好難想)
-        link_time_occupy_list = {}          # 用來查看link上的占用其況
-        prev_links_occupied = []            # 用來查看flow在先前links所占用的時間點(防止前一個Link還沒傳到 就已經出現在後一個link的情況)
         common_link = self.classify_links()
-        for c_link, c_list in common_link.items():                # F1, F2, F3     
-            sort_list = []
-            sort_list = self.long_path_sorting(c_link)
-                    
-          
-                
+        for c_link, c_list in common_link.items():                # F1, F2, F3   
+            self.common_path_bubble_sort(c_list)
+            self.genarate_active_time_slot(c_link, c_list)
 
     
-    def get_long_path(self, c_link):
-        for flow_name, flow_path in self.flow_paths_dic.items():
+    def common_path_bubble_sort(self, c_list):  #如何sort?  要判斷目前這條link後面還有幾個link要傳，瞭解之後取剩餘Link最多的flow優先排
+        for i in range(len(c_list)-1):
+            for j in range(len(c_list)-1-i):
+                if len(self.flow_paths_dic[c_list[j]]) < len(self.flow_paths_dic[c_list[j+1]]):
+                     c_list[j], c_list[j + 1] = c_list[j + 1], c_list[j]
+   
 
+    def genarate_active_time_slot(self, link, flow_list):
+        link_time_occupy_list = []          # 用來查看link上的占用其況
+        for flow in flow_list:
+            prev_links_occupied = []            # 用來查看flow在先前links所占用的時間點(防止前一個Link還沒傳到 就已經出現在後一個link的情況)
+            for time_filled_link in self.flow_paths_dic[flow]:
+                if time_filled_link["Time"]:
+                    for time in time_filled_link["Time"].keys():
+                        prev_links_occupied.append(time)
+            if link_time_occupy_list:
+                for time in link_time_occupy_list:
+                    if time not in prev_links_occupied:
+                        prev_links_occupied.append(time)
+            #print(f"看一下該flow目前排定的link時間的占用情況：{flow} , {prev_links_occupied}")
+            for not_filled_link in self.flow_paths_dic[flow]:
+                if not_filled_link["Ingress"] == link[0] and not_filled_link["Egress"] == link[1]:
+                    link_time_occupy_list = self.insert_continuous_values(prev_links_occupied, self.flow_dic[flow]["Size"])
+                    for time in link_time_occupy_list:
+                        not_filled_link["Time"][time] = flow
+            break
 
-            
-    def genarate_active_time_slot(self, flow, link, prev_links_occupied, link_time_occupy_list):
-        
-        
-
-
-        
-
-
-
-
-
-
+    def insert_continuous_values(self, sequence, continuous_length):
+        sequence = sorted(sequence)
+        print(f"印一下 = {sequence}")
+        result_sequence = []
+        i = 0
+        while i < len(sequence):
+            result_sequence.append(sequence[i])
+            if i < len(sequence) - 1 and sequence[i + 1] - sequence[i] > 1:
+                # 找到缺失的連續範圍
+                for j in range(1, continuous_length + 1):
+                    result_sequence.append(sequence[i] + j)
+            i += 1
+        result_sequence = list(set(result_sequence)-set(sequence))
+        return result_sequence
 
     def classify_links(self):
         common_link = {}
@@ -114,10 +115,6 @@ class Scheduler:
                         common_link[(link["Ingress"], link["Egress"])].append(flow_name)
         print(f"common_link = {common_link}")
         return common_link
-
-
-
-
 
 
     # def schedule_middle_2(self):
