@@ -27,6 +27,7 @@ class Scheduler:
             print(f"{flow}=")
             for path in paths:
                 print(path)
+        return self.flow_paths_dic
         # self.put_flows_to_time_table()
     
     def genarate_first_link_time(self, flow, path):
@@ -82,7 +83,6 @@ class Scheduler:
             #print(f"看一下該flow目前排定的link時間的占用情況：{flow} , {prev_links_occupied}")
             for not_filled_link in self.flow_paths_dic[flow]:
                 if not_filled_link["Ingress"] == link[0] and not_filled_link["Egress"] == link[1]:
-                    print(f"flow = {flow}, in = {link[0]}, E = {link[1]}")
                     insert_list = (self.insert_continuous_values(prev_links_occupied, self.flow_dic[flow]["Size"]))
                     for time in insert_list:
                         link_time_occupy_list.append(time)
@@ -93,7 +93,6 @@ class Scheduler:
 
     def insert_continuous_values(self, sequence, continuous_length):
         sequence = sorted(sequence)
-        print(f"印一下 = {sequence}")
         result_sequence = []
         i = 0
         while i < len(sequence):
