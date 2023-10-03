@@ -1,47 +1,46 @@
 import sys
 from PyQt5.QtWidgets import QApplication, QGraphicsView, QGraphicsScene, QGraphicsLineItem, QGraphicsSimpleTextItem, QGraphicsRectItem
 from PyQt5.QtGui import QPen, QColor
+import random
+
 
 class CustomGraphicsView(QGraphicsView):
-    def __init__(self):
+    def __init__(self, links_dic):
         super().__init__()
 
-        # 设置场景
         self.scene = QGraphicsScene(self)
         self.setScene(self.scene)
+        self.links_dic = links_dic
 
-        # 设置网格参数
+
+
         self.grid_size_x = 100
-        self.grid_size_y = 11
+        self.grid_size_y = self.links_dic
         self.cell_width = 30
         self.cell_height = 30
 
-        # 设置颜色
         self.grid_line_color = QColor("black")
         self.cell_background_color = QColor("lightgray")
 
-        # 绘制网格
         self.draw_grid()
 
     def draw_grid(self):
-        # 绘制水平线
-        for i in range(self.grid_size_y + 1):
+
+        for i, key in enumerate(self.grid_size_y.keys()):
             line = QGraphicsLineItem(0, i * self.cell_height, self.grid_size_x * self.cell_width, i * self.cell_height)
             pen = QPen(self.grid_line_color)
             line.setPen(pen)
             self.scene.addItem(line)
 
-        # 绘制垂直线
         for i in range(self.grid_size_x + 1):
-            line = QGraphicsLineItem(i * self.cell_width, 0, i * self.cell_width, self.grid_size_y * self.cell_height)
+            line = QGraphicsLineItem(i * self.cell_width, 0, i * self.cell_width, len(self.grid_size_y) * self.cell_height)
             pen = QPen(self.grid_line_color)
             line.setPen(pen)
             self.scene.addItem(line)
 
-        # 添加文字标签
-        for i in range(self.grid_size_y):
-            text_item = QGraphicsSimpleTextItem(str(f"Line{i}"))
-            text_item.setPos(-40, i * self.cell_height + 10)
+        for i, key in enumerate(self.grid_size_y.keys()):
+            text_item = QGraphicsSimpleTextItem(str(f"{key}"))
+            text_item.setPos(-70, i * self.cell_height + 10)
             self.scene.addItem(text_item)
 
         for i in range(self.grid_size_x + 1):
@@ -49,24 +48,31 @@ class CustomGraphicsView(QGraphicsView):
             text_item.setPos(i * self.cell_width + 10, -15)
             self.scene.addItem(text_item)
 
-        # 设置单元格背景颜色
-        for i in range(self.grid_size_y-5):
-            for j in range(self.grid_size_x-50):
-                rect = self.scene.addRect(j * self.cell_width, i * self.cell_height, self.cell_width, self.cell_height)
-                rect.setBrush(self.cell_background_color)
 
     def update_graphics_from_dict(self, data_dict):
-        # 根据传入的字典更新图形
-        # 这里假设字典中包含要绘制的矩形的信息
-        for rect_info in data_dict.get("rectangles", []):
-            x = rect_info.get("x", 0)
-            y = rect_info.get("y", 0)
-            width = rect_info.get("width", 1)
-            height = rect_info.get("height", 1)
-
-            rect = QGraphicsRectItem(x * self.cell_width, y * self.cell_height, width * self.cell_width, height * self.cell_height)
-            rect.setBrush(QColor(rect_info.get("color", "blue")))
-            self.scene.addItem(rect)
+        for flow_name, path in data_dict.items():
+            random_color = self.generate_random_color()
+            for link in path:
+                target_key = (link["Ingress"],link["Egress"]) 
+                y = list(self.links_dic.keys()).index(target_key)
+                x = link["Time"]
+                for time in x.keys():
+                    rect = QGraphicsRectItem(time * self.cell_width, y * self.cell_height, 1 * self.cell_width, 1 * self.cell_height)
+                    rect.setBrush(QColor(random_color))
+                    self.scene.addItem(rect)
+                    
+                    text_item = QGraphicsSimpleTextItem(str(flow_name))
+                    text_item.setPos(time * self.cell_width, y * self.cell_height +15)
+                    self.scene.addItem(text_item)
+            print(f"{flow_name}:{random_color}")
+            print('\n') 
+            
+    def generate_random_color(self):
+        red = random.randint(0, 255)
+        green = random.randint(0, 255)
+        blue = random.randint(0, 255)
+        color = QColor(red, green, blue)
+        return color
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)

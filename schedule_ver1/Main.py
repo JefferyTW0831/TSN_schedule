@@ -17,12 +17,13 @@ def main():
 
     scheduler = Scheduler(topology.flow_dic ,topology.links, topology.path_dic)     #排程
     
-    flow_path_dic = scheduler.scheduling()
+    scheduler.scheduling()
     app = QApplication(sys.argv)
-    view = CustomGraphicsView()
+    view = CustomGraphicsView(topology.links)
 
-    view.update_graphics_from_dict(flow_path_dic)
-
+    view.show()
+    view.update_graphics_from_dict(topology.path_dic)
+    
     sys.exit(app.exec_())
 
     # print(f"流字典 : ")
