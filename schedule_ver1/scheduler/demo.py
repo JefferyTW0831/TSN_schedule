@@ -1,6 +1,7 @@
 import sys
 from PyQt5.QtWidgets import QApplication, QGraphicsView, QGraphicsScene, QGraphicsLineItem, QGraphicsSimpleTextItem, QGraphicsRectItem
 from PyQt5.QtGui import QPen, QColor
+from PyQt5.QtCore import QPointF
 import random
 
 
@@ -20,7 +21,6 @@ class CustomGraphicsView(QGraphicsView):
         self.cell_height = 30
 
         self.grid_line_color = QColor("black")
-        self.cell_background_color = QColor("lightgray")
 
         self.draw_grid()
 
@@ -50,6 +50,7 @@ class CustomGraphicsView(QGraphicsView):
 
 
     def update_graphics_from_dict(self, data_dict):
+        collision_dict = {}
         for flow_name, path in data_dict.items():
             random_color = self.generate_random_color()
             for link in path:
@@ -57,20 +58,48 @@ class CustomGraphicsView(QGraphicsView):
                 y = list(self.links_dic.keys()).index(target_key)
                 x = link["Time"]
                 for time in x.keys():
-                    rect = QGraphicsRectItem(time * self.cell_width, y * self.cell_height, 1 * self.cell_width, 1 * self.cell_height)
-                    rect.setBrush(QColor(random_color))
-                    self.scene.addItem(rect)
                     
-                    text_item = QGraphicsSimpleTextItem(str(flow_name))
-                    text_item.setPos(time * self.cell_width, y * self.cell_height +15)
-                    self.scene.addItem(text_item)
-            print(f"{flow_name}:{random_color}")
-            print('\n') 
-            
+                    if self.is_color_at_position(time * self.cell_width + 0.5, y * self.cell_height + 0.5):
+                        rect = QGraphicsRectItem(time * self.cell_width, y * self.cell_height, 0.3 * self.cell_width, 0.3 * self.cell_height)
+                        rect.setBrush(QColor("black"))
+                        self.scene.addItem(rect)
+                        if collision_dict.get(target_key) == None:
+                            collision_dict[target_key] = {}
+                            collision_dict[target_key][time] = []
+                            collision_dict[target_key][time].append(flow_name)
+                        elif collision_dict[target_key].get(time) == None:
+                            collision_dict[target_key][time] = []
+                            collision_dict[target_key][time].append(flow_name)
+                        else:
+                            collision_dict[target_key][time].append(flow_name)
+                    
+                    else:
+                        rect = QGraphicsRectItem(time * self.cell_width, y * self.cell_height, 1 * self.cell_width, 1 * self.cell_height)
+                        rect.setBrush(QColor(random_color))
+                        self.scene.addItem(rect)
+                        text_item2 = QGraphicsSimpleTextItem(str(flow_name))
+                        text_item2.setPos(time * self.cell_width + 0.5, y * self.cell_height + 15)
+                        text_item2.setBrush(QColor("White"))  # 设置字体颜色
+                        self.scene.addItem(text_item2)
+        print(f"----------")
+        for link, time in collision_dict.items():
+            print(f"link = {link}, time = {time}")
+        print(f"{flow_name}:{random_color}")
+        print('\n') 
+
+
+    def is_color_at_position(self, x, y):
+        items = self.scene.items(QPointF(x, y))
+        for item in items:
+            if isinstance(item, QGraphicsRectItem):
+                return True
+        return False
+
+    
     def generate_random_color(self):
-        red = random.randint(0, 255)
-        green = random.randint(0, 255)
-        blue = random.randint(0, 255)
+        red = random.randint(1, 250)
+        green = random.randint(1, 250)
+        blue = random.randint(1, 250)
         color = QColor(red, green, blue)
         return color
 

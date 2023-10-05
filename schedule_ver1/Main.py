@@ -17,6 +17,17 @@ def main():
 
     scheduler = Scheduler(topology.flow_dic ,topology.links, topology.path_dic)     #排程
     
+    print(f"流字典 : ")
+    for key, value in topology.flow_dic.items():
+        print(f"{key}: {value}")
+    print(f"鏈節字典 : ")
+    for key, value in topology.links.items():
+        print(f"{key}: {value}")
+    print(f"路徑字典 : ")
+    for key, value in topology.path_dic.items():
+        print(f"{key}: {value}")
+
+
     scheduler.scheduling()
     app = QApplication(sys.argv)
     view = CustomGraphicsView(topology.links)
@@ -26,15 +37,7 @@ def main():
     
     sys.exit(app.exec_())
 
-    # print(f"流字典 : ")
-    # for key, value in topology.flow_dic.items():
-    #     print(f"{key}: {value}")
-    # print(f"鏈節字典 : ")
-    # for key, value in topology.links.items():
-    #     print(f"{key}: {value}")
-    # print(f"路徑字典 : ")
-    # for key, value in topology.path_dic.items():
-    #     print(f"{key}: {value}")
+    
 
 
 
