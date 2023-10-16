@@ -15,23 +15,28 @@ class Scheduler:
     def scheduling(self):
         self.schedulable_flows = self.init_flows_filter()
         for flow, data in self.schedulable_flows.items():
-            print(f"可排程之flows = {flow}:{data}")
-            for time in data["Time"]:
-                if self.time_table.get(time) == None:
-                    self.time_table[time] = {}
-                if self.time_table[time].get((data["Link"]["Ingress"], data["Link"]["Egress"])) == None:
-                    self.time_table[time][(data["Link"]["Ingress"], data["Link"]["Egress"])] = flow
-        for time, link in self.time_table.items():
-            print(f"時間表 = {time}:{link}")
+            for links in self.flow_paths_dic[flow]:
+                if links["Ingress"] == data["Link"]["Ingress"] and links["Egress"] == data["Link"]["Egress"]:   
+                    print(f"可排程之flows = {flow}:{data}")
+                    for time in data["Time"]:
+                        if self.time_table.get(time) == None:
+                            self.time_table[time] = {}
+                        if self.time_table[time].get((data["Link"]["Ingress"], data["Link"]["Egress"])) == None:
+                            self.time_table[time][(data["Link"]["Ingress"], data["Link"]["Egress"])] = flow
+                    continue
+                else:                                           #還在想要怎麼處理....
+                    pass
+            
+
             
 
 
-            
+
     def init_flows_filter(self):
         mentain_time_dict = {}
-        for flow, path in self.flow_paths_dic.items():    #flow = F1, path=[{'Src':'D1', 'Dst':'SW1', 'Time':[]},{},{}]
+        for flow, path in self.flow_paths_dic.items():    
             time_list = self.genarate_first_link_time(flow, path[0])
-            mentain_time_dict[flow] = {"Link":path[0], "Time":time_list, "PathSize":len(path)}
+            mentain_time_dict[flow] = {"Link":path[0], "Time":time_list, "PathSize":len(path)}                  #data_struct
         
         for i, (flow1, data1) in enumerate(mentain_time_dict.items()):
             for flow2, data2 in list(mentain_time_dict.items())[i+1:]:
