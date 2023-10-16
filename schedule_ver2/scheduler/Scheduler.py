@@ -6,29 +6,53 @@ class Scheduler:
         self.flow_dic = flow_dic
         self.flow_links = flow_links                        #{F1:(D1, D3, "", 2, 8, 5, 2, 8), F2:(D1, D4, "", 3, 9, 4, 3, 8),...}
         self.flow_paths_dic = flow_paths_dic            
-        self.time_table = {}                            #{(D1,D3):{}, }
-        self.wait_to_schedule = []
-   
+        self.remove_flows = []
+        self.schedulable_flows = {}
 
+        self.time_table = {}
+       
     def scheduling(self):
-        for flow, path in self.flow_paths_dic.items():    #flow = F1, path=[{'Src':'D1', 'Dst':'SW1', 'Time':[]},{},{}]
-            self.genarate_first_link_time(flow, path[0])
-           
-   
-        print(f"path_dic = ")
-        for flow, paths in self.flow_paths_dic.items():
-            print(f"{flow}=")
-            for path in paths:
-                print(path)
-        return self.flow_paths_dic
-        # self.put_flows_to_time_table()
-    
-    def genarate_first_link_time(self, flow, path):
-        path["Time"] = self.genarate_time_slot(flow, 0)
+        self.schedulable_flows = self.init_flows_filter()
+        for flow, data in self.schedulable_flows.items():
+            print(f"可排程之flows = {flow}:{data}")
+            for time in data["Time"]:
+                self.time_table[time] = flow
+            
 
-   
+
+
+
+
+    
+    def init_flows_filter(self):
+        mentain_time_dict = {}
+        for flow, path in self.flow_paths_dic.items():    #flow = F1, path=[{'Src':'D1', 'Dst':'SW1', 'Time':[]},{},{}]
+            time_list = self.genarate_first_link_time(flow, path[0])
+            mentain_time_dict[flow] = {"Link":path[0], "Time":time_list, "PathSize":len(path)}
+        
+        for i, (flow1, data1) in enumerate(mentain_time_dict.items()):
+            for flow2, data2 in list(mentain_time_dict.items())[i+1:]:
+                if data1['Link'] == data2['Link'] and bool(set(data1['Time']) & set(data2['Time'])):
+                    if flow1 not in self.remove_flows:
+                        if data1["PathSize"] > data2["PathSize"]:
+                            if flow1 not in self.remove_flows:
+                                self.remove_flows.append(flow1)
+                        else:
+                            if flow2 not in self.remove_flows:
+                                self.remove_flows.append(flow2)
+
+        for flow in self.remove_flows:
+            mentain_time_dict.pop(flow, None)
+
+        return mentain_time_dict
+
+    def genarate_first_link_time(self, flow, first_link):
+        time_list = self.genarate_time_slot(flow, 0)
+
+        return time_list
+
     def genarate_time_slot(self, flow, bias):
-        time_list = {}
+        time_list = []
         if bias == 0:
             start = self.flow_dic[flow]["StartTime"]
         else:
@@ -39,7 +63,7 @@ class Scheduler:
         current_time = start
         for _ in range(times):
             for _ in range(size):
-                time_list[current_time] = flow
+                time_list.append(current_time)
                 current_time += 1
             current_time += period - size
         return time_list
