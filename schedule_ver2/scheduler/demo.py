@@ -49,11 +49,16 @@ class CustomGraphicsView(QGraphicsView):
             self.scene.addItem(text_item)
 
 
-    def update_graphics_from_dict(self, data_dict):
+    def update_graphics_from_dict(self, time_table, flows):      #time_table
         collision_dict = {}
-        for flow_name, path in data_dict.items():
+        flow_dic = {}
+        for flow in flows:
             random_color = self.generate_random_color()
-            for link in path:
+            flow_dic[flow] = {"color":random_color}
+
+        
+        for time, path in time_table.items():
+            for link in path.keys():
                 target_key = (link["Ingress"],link["Egress"]) 
                 y = list(self.links_dic.keys()).index(target_key)
                 x = link["Time"]
@@ -79,7 +84,7 @@ class CustomGraphicsView(QGraphicsView):
                         self.scene.addItem(rect)
                         text_item2 = QGraphicsSimpleTextItem(str(flow_name))
                         text_item2.setPos(time * self.cell_width + 0.5, y * self.cell_height + 15)
-                        text_item2.setBrush(QColor("White"))  # 设置字体颜色
+                        text_item2.setBrush(QColor("White"))  
                         self.scene.addItem(text_item2)
         print(f"----------")
         for link, time in collision_dict.items():

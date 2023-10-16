@@ -33,7 +33,7 @@ def main():
     view = CustomGraphicsView(topology.links)
 
     view.show()
-    view.update_graphics_from_dict(topology.path_dic)
+    view.update_graphics_from_dict(scheduler.time_table, scheduler.remaining_flows)
     
     sys.exit(app.exec_())
 

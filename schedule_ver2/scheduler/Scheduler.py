@@ -7,6 +7,7 @@ class Scheduler:
         self.flow_links = flow_links                        #{F1:(D1, D3, "", 2, 8, 5, 2, 8), F2:(D1, D4, "", 3, 9, 4, 3, 8),...}
         self.flow_paths_dic = flow_paths_dic            
         self.remove_flows = []
+        self.remaining_flows = []
         self.schedulable_flows = {}
 
         self.time_table = {}
@@ -16,7 +17,12 @@ class Scheduler:
         for flow, data in self.schedulable_flows.items():
             print(f"可排程之flows = {flow}:{data}")
             for time in data["Time"]:
-                self.time_table[time] = flow
+                if self.time_table.get(time) == None:
+                    self.time_table[time] = {}
+                if self.time_table[time].get((data["Link"]["Ingress"], data["Link"]["Egress"])) == None:
+                    self.time_table[time][(data["Link"]["Ingress"], data["Link"]["Egress"])] = flow
+        for time, link in self.time_table.items():
+            print(f"時間表 = {time}:{link}")
             
 
 
@@ -43,6 +49,8 @@ class Scheduler:
 
         for flow in self.remove_flows:
             mentain_time_dict.pop(flow, None)
+        
+        self.remaining_flows = list(mentain_time_dict.keys())
 
         return mentain_time_dict
 
