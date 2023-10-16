@@ -56,40 +56,35 @@ class CustomGraphicsView(QGraphicsView):
             random_color = self.generate_random_color()
             flow_dic[flow] = {"color":random_color}
 
-        
-        for time, path in time_table.items():
-            for link in path.keys():
-                target_key = (link["Ingress"],link["Egress"]) 
-                y = list(self.links_dic.keys()).index(target_key)
-                x = link["Time"]
-                for time in x.keys():
-                    
-                    if self.is_color_at_position(time * self.cell_width + 0.5, y * self.cell_height + 0.5):
-                        rect = QGraphicsRectItem(time * self.cell_width, y * self.cell_height, 0.3 * self.cell_width, 0.3 * self.cell_height)
-                        rect.setBrush(QColor("black"))
-                        self.scene.addItem(rect)
-                        if collision_dict.get(target_key) == None:
-                            collision_dict[target_key] = {}
-                            collision_dict[target_key][time] = []
-                            collision_dict[target_key][time].append(flow_name)
-                        elif collision_dict[target_key].get(time) == None:
-                            collision_dict[target_key][time] = []
-                            collision_dict[target_key][time].append(flow_name)
-                        else:
-                            collision_dict[target_key][time].append(flow_name)
-                    
+        for time, path in time_table.items():                         #先話直的(LINK)，在畫橫的(時間)
+            for link, flow in path.items():
+                y = list(self.links_dic.keys()).index(link)           #縱向鏈結
+                if self.is_color_at_position(time * self.cell_width + 0.5, y * self.cell_height + 0.5):
+                    rect = QGraphicsRectItem(time * self.cell_width, y * self.cell_height, 0.3 * self.cell_width, 0.3 * self.cell_height)
+                    rect.setBrush(QColor("black"))
+                    self.scene.addItem(rect)
+                    if collision_dict.get(link) == None:
+                        collision_dict[link] = {}
+                        collision_dict[link][time] = []
+                        collision_dict[link][time].append(flow)
+                    elif collision_dict[link].get(time) == None:
+                        collision_dict[link][time] = []
+                        collision_dict[link][time].append(flow)
                     else:
-                        rect = QGraphicsRectItem(time * self.cell_width, y * self.cell_height, 1 * self.cell_width, 1 * self.cell_height)
-                        rect.setBrush(QColor(random_color))
-                        self.scene.addItem(rect)
-                        text_item2 = QGraphicsSimpleTextItem(str(flow_name))
-                        text_item2.setPos(time * self.cell_width + 0.5, y * self.cell_height + 15)
-                        text_item2.setBrush(QColor("White"))  
-                        self.scene.addItem(text_item2)
+                        collision_dict[link][time].append(flow)
+                    
+                else:
+                    rect = QGraphicsRectItem(time * self.cell_width, y * self.cell_height, 1 * self.cell_width, 1 * self.cell_height)
+                    rect.setBrush(QColor(flow_dic[flow]["color"]))
+                    self.scene.addItem(rect)
+                    text_item2 = QGraphicsSimpleTextItem(str(flow))
+                    text_item2.setPos(time * self.cell_width + 0.5, y * self.cell_height + 15)
+                    text_item2.setBrush(QColor("White"))  
+                    self.scene.addItem(text_item2)
         print(f"----------")
         for link, time in collision_dict.items():
             print(f"link = {link}, time = {time}")
-        print(f"{flow_name}:{random_color}")
+  
         print('\n') 
 
 

@@ -26,10 +26,7 @@ class Scheduler:
             
 
 
-
-
-
-    
+            
     def init_flows_filter(self):
         mentain_time_dict = {}
         for flow, path in self.flow_paths_dic.items():    #flow = F1, path=[{'Src':'D1', 'Dst':'SW1', 'Time':[]},{},{}]
