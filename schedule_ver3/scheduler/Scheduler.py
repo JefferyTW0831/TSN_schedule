@@ -17,11 +17,15 @@ class Scheduler:
         schedule_middle = ScheduleMiddle(self.flow_dic, self.flow_paths_dic)
         schedule_middle.schedule_middle()
 
+
+        print("\n\n------------------------------")
+        print(f"(Scheduler.py)\n")
         print(f"path_dic = ")
         for flow, paths in self.flow_paths_dic.items():
             print(f"{flow}=")
             for path in paths:
                 print(path)
+        print("-------------------------------")
         return self.flow_paths_dic
     
     

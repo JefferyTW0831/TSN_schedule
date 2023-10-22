@@ -4,9 +4,16 @@ class ScheduleMiddle:
         self.flow_dic = flow_dic
         self.flow_paths_dic = flow_paths_dic
         
-    def schedule_middle(self):                                    #
+    def schedule_middle(self):                  
+
         common_link = self.classify_links()
-        for c_link, c_list in common_link.items():                # F1, F2, F3   
+        print("\n\n------------------------------")
+        print(f"(ScheduleMiddle.py)\n")
+        for c_link, c_list in common_link.items():
+            print(f"{c_link}={c_list}")
+        print("-------------------------------")
+
+        for c_link, c_list in common_link.items():                 
             self.common_path_bubble_sort(c_list)
             self.genarate_active_time_slot(c_link, c_list)
             

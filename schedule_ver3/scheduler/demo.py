@@ -13,8 +13,6 @@ class Demo(QGraphicsView):
         self.setScene(self.scene)
         self.links_dic = links_dic
 
-
-
         self.grid_size_x = 101
         self.grid_size_y = self.links_dic
         self.cell_width = 30
@@ -83,7 +81,6 @@ class Demo(QGraphicsView):
                         text_item2.setBrush(QColor("White"))  # 设置字体颜色
                         self.scene.addItem(text_item2)
 
-
     def is_color_at_position(self, x, y):
         items = self.scene.items(QPointF(x, y))
         for item in items:
@@ -91,7 +88,6 @@ class Demo(QGraphicsView):
                 return True
         return False
 
-    
     def generate_random_color(self):
         red = random.randint(1, 250)
         green = random.randint(1, 250)

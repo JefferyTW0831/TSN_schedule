@@ -4,7 +4,6 @@ class InitFlowFilter:
         self.flow_dic = flow_dic
         self.flow_paths_dic = flow_paths_dic
 
-
     #應該要將比較方法放在時間表(time_table)裡面進行，會有比較高的可調整性。(但這邊想說一次處理，先利用path_dic執行看看，之後有機會再做模組化調整)
     def init_flows_filter(self):  
         mentain_time_dict = {}
@@ -29,6 +28,8 @@ class InitFlowFilter:
                         else:
                             if flow2 not in remove:
                                 remove.append(flow2)
+        print("\n\n------------------------------")
+        print(f"(IintFlowFilter.py)\n")
         print(f"remove_flows = ")
         for flow in remove:
             print(f"{flow}:{self.flow_paths_dic[flow][0]}")
