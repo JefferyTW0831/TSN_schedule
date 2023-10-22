@@ -3,15 +3,22 @@ class InitFlowFilter:
     def __init__(self, flow_dic, flow_paths_dic):
         self.flow_dic = flow_dic
         self.flow_paths_dic = flow_paths_dic
-    
-    def init_flows_filter(self):
+
+
+    #應該要將比較方法放在時間表(time_table)裡面進行，會有比較高的可調整性。(但這邊想說一次處理，先利用path_dic執行看看，之後有機會再做模組化調整)
+    def init_flows_filter(self):  
         mentain_time_dict = {}
         remove = []
+
+        #先將時間放入各Flow的path中的first link，並計算path size
         for flow, path in self.flow_paths_dic.items():    
             time_list = self.genarate_first_link_time(flow)
-            path[0]["Time"] = time_list   
-            mentain_time_dict[flow] = {"Ingress":path[0]["Ingress"], "Egress":path[0]["Egress"], "PathSize":len(path)}               #data_struct
-        
+            #將時間放入first_link儲存
+            path[0]["Time"] = time_list
+            #計算path size   
+            mentain_time_dict[flow] = {"Ingress":path[0]["Ingress"], "Egress":path[0]["Egress"], "PathSize":len(path)} 
+
+        #比較各flow，當Ingress及Egress相同，找到有相同first_link的兩個flow，比較兩flow內的時間，如果時間相同
         for i, (flow1, data1) in enumerate(mentain_time_dict.items()):
             for flow2, data2 in list(mentain_time_dict.items())[i+1:]:
                 if data1["Ingress"] == data2["Ingress"] and data1["Egress"] == data2["Egress"] and bool(set(self.flow_paths_dic[flow1][0]['Time']) & set(self.flow_paths_dic[flow2][0]['Time'])):
@@ -31,7 +38,6 @@ class InitFlowFilter:
     
     def genarate_first_link_time(self, flow):
         time_list = self.genarate_time_slot(flow, 0)
-
         return time_list
 
     def genarate_time_slot(self, flow, bias):

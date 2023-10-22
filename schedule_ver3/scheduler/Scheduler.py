@@ -6,11 +6,12 @@ from .ScheduleMiddle import ScheduleMiddle
 class Scheduler:
     def __init__(self, flow_dic, flow_links, flow_paths_dic) :
         self.flow_dic = flow_dic
-        self.flow_links = flow_links                        #{F1:(D1, D3, "", 2, 8, 5, 2, 8), F2:(D1, D4, "", 3, 9, 4, 3, 8),...}
+        self.flow_links = flow_links                        
         self.flow_paths_dic = flow_paths_dic            
    
     def scheduling(self):
-        init_flows = InitFlowFilter(self.flow_dic ,self.flow_paths_dic)
+        #將有相同first_Link的flows依據path從小排到大，發生衝突時path較小的可優先被挑選
+        init_flows = InitFlowFilter(self.flow_dic ,self.flow_paths_dic)             
         init_flows.init_flows_filter()
 
         schedule_middle = ScheduleMiddle(self.flow_dic, self.flow_paths_dic)

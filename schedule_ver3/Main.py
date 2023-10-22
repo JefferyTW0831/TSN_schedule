@@ -4,7 +4,7 @@ from PyQt5.QtWidgets import QApplication
 from InputFlow import InputFlow
 from scheduler.Scheduler import Scheduler
 from Topology import Topology
-from scheduler.demo import CustomGraphicsView
+from scheduler.Demo import Demo
 
 #from ResourceUsagePlot import ResourceUsagePlot
 
@@ -30,7 +30,7 @@ def main():
     
     scheduler.scheduling()
     app = QApplication(sys.argv)
-    view = CustomGraphicsView(topology.links)
+    view = Demo(topology.links)
 
     view.show()
     view.update_graphics_from_dict(topology.path_dic)

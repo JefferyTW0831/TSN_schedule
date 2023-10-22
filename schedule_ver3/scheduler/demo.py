@@ -5,7 +5,7 @@ from PyQt5.QtCore import QPointF
 import random
 
 
-class CustomGraphicsView(QGraphicsView):
+class Demo(QGraphicsView):
     def __init__(self, links_dic):
         super().__init__()
 
@@ -101,6 +101,6 @@ class CustomGraphicsView(QGraphicsView):
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
-    view = CustomGraphicsView()
+    view = Demo()
     view.show()
     sys.exit(app.exec_())
