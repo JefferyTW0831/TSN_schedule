@@ -13,12 +13,13 @@ class ScheduleMiddle:
             print(f"{c_link}={c_list}")
         print("-------------------------------")
 
-        for c_link, c_list in common_link.items():                 
+        for c_link, c_list in common_link.items():  
             self.common_path_bubble_sort(c_list)
             self.genarate_active_time_slot(c_link, c_list)
             
     def classify_links(self):
         common_link = {}
+        remove = []
         for flow_name, flow_path in self.flow_paths_dic.items():
             for link in flow_path:
                 if not link.get('Time'):
@@ -28,15 +29,23 @@ class ScheduleMiddle:
                         common_link[(link["Ingress"], link["Egress"])].append(flow_name)
                     else:
                         common_link[(link["Ingress"], link["Egress"])].append(flow_name)
-    
+        #刪除沒有common的link
+        for c_link, c_list in common_link.items():
+            if len(c_list) < 2:
+                remove.append(c_link)
+        for link in remove:
+            common_link.pop(link, None)
+
         return common_link
     
-    def common_path_bubble_sort(self, c_list):  #如何sort?  要判斷目前這條link後面還有幾個link要傳，瞭解之後取剩餘Link最多的flow優先排
+    def common_path_bubble_sort(self, c_list):  #如何sort?  依照path長度，較長的先排
+        #依照path長度，較長的先排
         for i in range(len(c_list)-1):
             for j in range(len(c_list)-1-i):
+                #EX. F3:path=5, F1:path=3
+                self.flow_paths_dic[c_list[j]]
                 if len(self.flow_paths_dic[c_list[j]]) < len(self.flow_paths_dic[c_list[j+1]]):
                      c_list[j], c_list[j + 1] = c_list[j + 1], c_list[j]
-   
 
     def genarate_active_time_slot(self, link, flow_list):
         

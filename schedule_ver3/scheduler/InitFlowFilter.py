@@ -11,9 +11,10 @@ class InitFlowFilter:
 
         #先將時間放入各Flow的path中的first link，並計算path size
         for flow, path in self.flow_paths_dic.items():    
-            time_list = self.genarate_first_link_time(flow)
+            time_list = self.genarate_time_slot(flow)
             #將時間放入first_link儲存
             path[0]["Time"] = time_list
+            
             #計算path size   
             mentain_time_dict[flow] = {"Ingress":path[0]["Ingress"], "Egress":path[0]["Egress"], "PathSize":len(path)} 
 
@@ -36,17 +37,10 @@ class InitFlowFilter:
             self.flow_paths_dic.pop(flow, None)
         print("------------------------------")
      
-    
-    def genarate_first_link_time(self, flow):
-        time_list = self.genarate_time_slot(flow, 0)
-        return time_list
-
-    def genarate_time_slot(self, flow, bias):
+    #加入時間
+    def genarate_time_slot(self, flow):
         time_list = {}
-        if bias == 0:
-            start = self.flow_dic[flow]["StartTime"]
-        else:
-            start = self.flow_dic[flow]["StartTime"]+self.flow_dic[flow]["Period"]+bias
+        start = self.flow_dic[flow]["StartTime"]
         period = self.flow_dic[flow]["Period"]
         times = self.flow_dic[flow]["Times"]
         size = self.flow_dic[flow]["Size"]
