@@ -20,7 +20,7 @@ flow_data = {
             "Deadline": 6
         },
         "F2": {
-            "Src": "D1",
+            "Src": "D2",
             "Dst": "D6",
             "StartTime": 2,
             "Period": 10,
@@ -74,7 +74,7 @@ flow_data = {
             "Deadline": 12
         },
         "F8": {
-            "Src": "D6",
+            "Src": "D5",
             "Dst": "D3",
             "StartTime": 4,
             "Period": 8,
@@ -92,7 +92,7 @@ flow_data = {
             "Deadline": 6
         },
         "F10": {
-            "Src": "D7",
+            "Src": "D5",
             "Dst": "D3",
             "StartTime": 4,
             "Period": 12,

@@ -1,7 +1,7 @@
 import math
 import copy
 from .InitFlowFilter import InitFlowFilter
-from .ScheduleMiddle import ScheduleMiddle
+from .ScheduleMiddle_copy import ScheduleMiddle
 
 class Scheduler:
     def __init__(self, flow_dic, flow_links, flow_paths_dic) :
