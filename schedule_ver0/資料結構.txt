@@ -1,0 +1,49 @@
+流字典 : 
+F1: {'Src': 'D1', 'Dst': 'D3', 'StartTime': 0, 'Period': 6, 'Times': 9, 'Size': 2, 'Deadline': 6}
+F2: {'Src': 'D1', 'Dst': 'D6', 'StartTime': 2, 'Period': 8, 'Times': 8, 'Size': 2, 'Deadline': 8}
+F3: {'Src': 'D1', 'Dst': 'D7', 'StartTime': 4, 'Period': 12, 'Times': 6, 'Size': 2, 'Deadline': 12}
+F4: {'Src': 'D3', 'Dst': 'D2', 'StartTime': 5, 'Period': 9, 'Times': 8, 'Size': 3, 'Deadline': 9}
+F5: {'Src': 'D3', 'Dst': 'D5', 'StartTime': 3, 'Period': 18, 'Times': 5, 'Size': 3, 'Deadline': 18}
+F6: {'Src': 'D3', 'Dst': 'D7', 'StartTime': 1, 'Period': 15, 'Times': 6, 'Size': 3, 'Deadline': 15}
+F7: {'Src': 'D6', 'Dst': 'D1', 'StartTime': 0, 'Period': 12, 'Times': 5, 'Size': 2, 'Deadline': 12}
+F8: {'Src': 'D6', 'Dst': 'D3', 'StartTime': 4, 'Period': 8, 'Times': 7, 'Size': 2, 'Deadline': 8}
+F9: {'Src': 'D6', 'Dst': 'D4', 'StartTime': 6, 'Period': 6, 'Times': 8, 'Size': 2, 'Deadline': 6}
+F10: {'Src': 'D7', 'Dst': 'D3', 'StartTime': 4, 'Period': 12, 'Times': 5, 'Size': 3, 'Deadline': 12}
+F11: {'Src': 'D7', 'Dst': 'D4', 'StartTime': 2, 'Period': 10, 'Times': 6, 'Size': 2, 'Deadline': 8}
+F12: {'Src': 'D7', 'Dst': 'D6', 'StartTime': 1, 'Period': 6, 'Times': 8, 'Size': 3, 'Deadline': 6}
+鏈節字典 :
+('D1', 'SW1'): {}
+('SW1', 'D2'): {}
+('SW1', 'SW2'): {}
+('SW2', 'D3'): {}
+('SW2', 'SW3'): {}
+('D4', 'SW3'): {}
+('SW3', 'SW5'): {}
+('SW5', 'D7'): {}
+('SW3', 'SW4'): {}
+('D5', 'SW4'): {}
+('SW4', 'D6'): {}
+('SW1', 'D1'): {}
+('D2', 'SW1'): {}
+('SW2', 'SW1'): {}
+('D3', 'SW2'): {}
+('SW3', 'SW2'): {}
+('SW3', 'D4'): {}
+('SW5', 'SW3'): {}
+('D7', 'SW5'): {}
+('SW4', 'SW3'): {}
+('SW4', 'D5'): {}
+('D6', 'SW4'): {}
+路徑字典 :
+F1: [{'Src': 'D1', 'Dst': 'SW1', 'Time': {}}, {'Src': 'SW1', 'Dst': 'SW2', 'Time': {}}, {'Src': 'SW2', 'Dst': 'D3', 'Time': {}}]
+F2: [{'Src': 'D1', 'Dst': 'SW1', 'Time': {}}, {'Src': 'SW1', 'Dst': 'SW2', 'Time': {}}, {'Src': 'SW2', 'Dst': 'SW3', 'Time': {}}, {'Src': 'SW3', 'Dst': 'SW4', 'Time': {}}, {'Src': 'SW4', 'Dst': 'D6', 'Time': {}}]        
+F3: [{'Src': 'D1', 'Dst': 'SW1', 'Time': {}}, {'Src': 'SW1', 'Dst': 'SW2', 'Time': {}}, {'Src': 'SW2', 'Dst': 'SW3', 'Time': {}}, {'Src': 'SW3', 'Dst': 'SW5', 'Time': {}}, {'Src': 'SW5', 'Dst': 'D7', 'Time': {}}]        
+F4: [{'Src': 'D3', 'Dst': 'SW2', 'Time': {}}, {'Src': 'SW2', 'Dst': 'SW1', 'Time': {}}, {'Src': 'SW1', 'Dst': 'D2', 'Time': {}}]
+F5: [{'Src': 'D3', 'Dst': 'SW2', 'Time': {}}, {'Src': 'SW2', 'Dst': 'SW3', 'Time': {}}, {'Src': 'SW3', 'Dst': 'SW4', 'Time': {}}, {'Src': 'SW4', 'Dst': 'D5', 'Time': {}}]
+F6: [{'Src': 'D3', 'Dst': 'SW2', 'Time': {}}, {'Src': 'SW2', 'Dst': 'SW3', 'Time': {}}, {'Src': 'SW3', 'Dst': 'SW5', 'Time': {}}, {'Src': 'SW5', 'Dst': 'D7', 'Time': {}}]
+F7: [{'Src': 'D6', 'Dst': 'SW4', 'Time': {}}, {'Src': 'SW4', 'Dst': 'SW3', 'Time': {}}, {'Src': 'SW3', 'Dst': 'SW2', 'Time': {}}, {'Src': 'SW2', 'Dst': 'SW1', 'Time': {}}, {'Src': 'SW1', 'Dst': 'D1', 'Time': {}}]        
+F8: [{'Src': 'D6', 'Dst': 'SW4', 'Time': {}}, {'Src': 'SW4', 'Dst': 'SW3', 'Time': {}}, {'Src': 'SW3', 'Dst': 'SW2', 'Time': {}}, {'Src': 'SW2', 'Dst': 'D3', 'Time': {}}]
+F9: [{'Src': 'D6', 'Dst': 'SW4', 'Time': {}}, {'Src': 'SW4', 'Dst': 'SW3', 'Time': {}}, {'Src': 'SW3', 'Dst': 'D4', 'Time': {}}]
+F10: [{'Src': 'D7', 'Dst': 'SW5', 'Time': {}}, {'Src': 'SW5', 'Dst': 'SW3', 'Time': {}}, {'Src': 'SW3', 'Dst': 'SW2', 'Time': {}}, {'Src': 'SW2', 'Dst': 'D3', 'Time': {}}]
+F11: [{'Src': 'D7', 'Dst': 'SW5', 'Time': {}}, {'Src': 'SW5', 'Dst': 'SW3', 'Time': {}}, {'Src': 'SW3', 'Dst': 'D4', 'Time': {}}]
+F12: [{'Src': 'D7', 'Dst': 'SW5', 'Time': {}}, {'Src': 'SW5', 'Dst': 'SW3', 'Time': {}}, {'Src': 'SW3', 'Dst': 'SW4', 'Time': {}}, {'Src': 'SW4', 'Dst': 'D6', 'Time': {}}]

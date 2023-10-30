@@ -24,13 +24,10 @@ class Scheduler:
                         if self.time_table[time].get((data["Link"]["Ingress"], data["Link"]["Egress"])) == None:
                             self.time_table[time][(data["Link"]["Ingress"], data["Link"]["Egress"])] = flow
                     continue
-                else:                                           #還在想要怎麼處理....
+                else:                                           #還在想要怎麼處理....依照前一個link生成一串數字並塞進去，但是這樣就寫法一樣了
                     pass
-            
-
-            
-
-
+        for time, data in self.time_table.items():
+            print(f"{time}:{data}")
 
     def init_flows_filter(self):
         mentain_time_dict = {}
@@ -41,7 +38,7 @@ class Scheduler:
         for i, (flow1, data1) in enumerate(mentain_time_dict.items()):
             for flow2, data2 in list(mentain_time_dict.items())[i+1:]:
                 if data1['Link'] == data2['Link'] and bool(set(data1['Time']) & set(data2['Time'])):
-                    if flow1 not in self.remove_flows:
+                    if flow1 not in self.remove_flows: 
                         if data1["PathSize"] > data2["PathSize"]:
                             if flow1 not in self.remove_flows:
                                 self.remove_flows.append(flow1)
