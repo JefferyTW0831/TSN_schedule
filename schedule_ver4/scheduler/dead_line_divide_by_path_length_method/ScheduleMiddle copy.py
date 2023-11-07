@@ -36,7 +36,7 @@ class ScheduleMiddle:
                                     reschedule[time+1] = {}
                                 reschedule[time+1].update({next_link:packet})
         if reschedule:
-            print(f"\n\n重新排程：{reschedule}\n")
+            #print(f"\n\n重新排程：{reschedule}\n")
             self.rescheduling(reschedule)
             
     def rescheduling(self, reschedule):
@@ -71,4 +71,4 @@ class ScheduleMiddle:
                        
         if remaining_schedule:
             self.rescheduling(remaining_schedule)
-        print(f"剩餘的：schedule = {remaining_schedule}")   
+       # print(f"剩餘的：schedule = {remaining_schedule}")   

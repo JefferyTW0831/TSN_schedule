@@ -12,15 +12,32 @@ def is_valid_flow_data(data):
 flow_data = {
         "F1": {
             "Src": "D1",
+            "Dst": "D3",
+            "StartTime": 0,
+            "Period": 6,
+            "Times": 9,
+            "Size": 2,
+            "Deadline": 6
+        },
+        "F2": {
+            "Src": "D2",
+            "Dst": "D6",
+            "StartTime": 2,
+            "Period": 10,
+            "Times": 8,
+            "Size": 2,
+            "Deadline": 10
+        },
+        "F3": {
+            "Src": "D1",
             "Dst": "D7",
             "StartTime": 4,
             "Period": 12,
             "Times": 6,
             "Size": 2,
             "Deadline": 12
-            
         },
-        "F2": {
+        "F4": {
             "Src": "D3",
             "Dst": "D2",
             "StartTime": 5,
@@ -29,37 +46,7 @@ flow_data = {
             "Size": 3,
             "Deadline": 9
         },
-        "F3": {
-            "Src": "D1",
-            "Dst": "D3",
-            "StartTime": 0,
-            "Period": 6,
-            "Times": 9,
-            "Size": 2,
-            "Deadline": 6
-            
-        },
-        "F4": {
-            "Src": "D2",
-            "Dst": "D6",
-            "StartTime": 2,
-            "Period": 10,
-            "Times": 8,
-            "Size": 2,
-            "Deadline": 10
-            
-        },
         "F5": {
-            "Src": "D3",
-            "Dst": "D7",
-            "StartTime": 1,
-            "Period": 15,
-            "Times": 6,
-            "Size": 3,
-            "Deadline": 15
-            
-        },
-        "F6": {
             "Src": "D3",
             "Dst": "D5",
             "StartTime": 3,
@@ -67,7 +54,15 @@ flow_data = {
             "Times": 5,
             "Size": 3,
             "Deadline": 18
-            
+        },
+        "F6": {
+            "Src": "D3",
+            "Dst": "D7",
+            "StartTime": 1,
+            "Period": 15,
+            "Times": 6,
+            "Size": 3,
+            "Deadline": 15
         },
         "F7": {
             "Src": "D6",

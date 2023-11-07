@@ -10,21 +10,23 @@ class InitFlowFilter:
         
         #先將時間放入各Flow的path中的first link，並計算path size
         for flow, path in self.flow_paths_dic.items():    
-            time_list = self.genarate_time_slot(flow)
+            time_list = self.genarate_time_slot(flow, len(path))
             self.time_table_maintainer.put_path_and_time_list_to_table(flow, path[0], time_list)
 
        
     #加入時間
-    def genarate_time_slot(self, flow):
+    #Flow = 名稱, Packet = 封包編號, piority = 最大容忍時間/路徑長度(結果越小優先)
+    def genarate_time_slot(self, flow, path_length):
         time_list = {}
         start = self.flow_dic[flow]["StartTime"]
         period = self.flow_dic[flow]["Period"]
         times = self.flow_dic[flow]["Times"]
         size = self.flow_dic[flow]["Size"]
+        e2e = self.flow_dic[flow]["Deadline"]
         current_time = start
-        for _ in range(times):
-            for times in range(size):
-                time_list[current_time] = {"Flow":flow, "Packet":times}
+        for instance in range(times):
+            for packet_num in range(size):
+                time_list[current_time] = {"Flow":flow, "Instance":instance, "Packet":packet_num, "PiorityWeiget":e2e/path_length}
                 current_time += 1
             current_time += period - size
         return time_list
