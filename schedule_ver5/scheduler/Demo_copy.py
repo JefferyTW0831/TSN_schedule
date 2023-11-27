@@ -13,7 +13,7 @@ class Demo(QGraphicsView):
         self.setScene(self.scene)
         self.links_dic = links_dic
 
-        self.grid_size_x = 101
+        self.grid_size_x = 201
         self.grid_size_y = self.links_dic
         self.cell_width = 30
         self.cell_height = 30

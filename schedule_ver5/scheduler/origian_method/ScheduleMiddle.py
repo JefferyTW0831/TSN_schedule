@@ -5,10 +5,11 @@ class ScheduleMiddle:
         self.flow_dic = flow_dic
         self.flow_paths_dic = flow_paths_dic
         self.time_table = time_table_maintainer.time_table  #dict
+        self.fail_flow = []
         
     def schedule_middle(self):
         reschedule = {}
-        for time in range(0,101):
+        for time in range(0,201):
 
             if self.time_table.get(time) != None:
                 #依據當前時間所佔據在link上的Packets，取得他下一條是哪條link，並排程他近期可以占用的時間
@@ -26,6 +27,7 @@ class ScheduleMiddle:
                             #建立link並將封包丟到time_slot裡面
                             self.time_table[time+1] = {}
                             self.time_table[time+1].update({next_link:packet})
+                            
                         else:
                             #如果time+1已被建立但是裡面沒有該link(亦即無衝突)
                             if self.time_table[time+1].get(next_link) == None:
@@ -39,7 +41,11 @@ class ScheduleMiddle:
             #print(f"\n\n重新排程：{reschedule}\n")
             self.rescheduling(reschedule)
             
+            
     def rescheduling(self, reschedule):
+        print(f"\n\n重新排程：\n")
+        for time, data in reschedule.items():
+            print(time, data)
         remaining_schedule = {}
         for time, link_dic in reschedule.items():
             for link, packet in link_dic.items():
@@ -48,15 +54,21 @@ class ScheduleMiddle:
                     if self.time_table.get(time) == None:
                         self.time_table[time] = {}
                         self.time_table[time][link] = packet
+                        if time >= packet["Tolerant"]:
+                                if packet['Flow'] not in self.fail_flow:
+                                    self.fail_flow.append(packet['Flow'])   
                         
                         set_up = False
                     else:
                         if self.time_table[time].get(link) == None:
                             self.time_table[time][link] = packet
-                        
+                            if time >= packet["Tolerant"]:
+                                if packet['Flow'] not in self.fail_flow:
+                                    self.fail_flow.append(packet['Flow'])
                             set_up = False
                         else:
                             time += 1
+                            
      
                 for link2 in self.flow_paths_dic[packet["Flow"]]:
                     next_link = ()

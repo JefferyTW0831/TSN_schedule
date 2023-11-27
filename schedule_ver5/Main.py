@@ -18,21 +18,24 @@ def main():
 
 
 
-    print(f"流字典 : ")
-    for key, value in topology.flow_dic.items():
-        print(f"{key}: {value}")
-    print(f"鏈節字典 : ")
-    for key, value in topology.links.items():
-        print(f"{key}: {value}")
-    print(f"路徑字典 : ")
-    for key, value in topology.path_dic.items():
-        print(f"{key}: {value}")
+    # print(f"流字典 : ")
+    # for key, value in topology.flow_dic.items():
+    #     print(f"{key}: {value}")
+    # print(f"鏈節字典 : ")
+    # for key, value in topology.links.items():
+    #     print(f"{key}: {value}")
+    # print(f"路徑字典 : ")
+    # for key, value in topology.path_dic.items():
+    #     print(f"{key}: {value}")
 
  
     #選擇方法
     scheduler_choose = SchedulerSwitch(topology)
     #排程結果資料取得
     scheduled_data = scheduler_choose.run()
+    
+   
+    
 
     app = QApplication(sys.argv)
     view = Demo(topology.links)
