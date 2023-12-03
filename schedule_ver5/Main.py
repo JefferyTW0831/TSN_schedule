@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 import sys
 from PyQt5.QtWidgets import QApplication
-from InputFlow import InputFlow
+from network_datas.InputFlow import InputFlow
+from network_datas.Topology import Topology
 from scheduler.Scheduler_swicth import SchedulerSwitch
-from Topology import Topology
-from scheduler.Demo_copy import Demo
+from scheduler.Demo import Demo
 
 
 

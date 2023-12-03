@@ -38,7 +38,7 @@ class TimeTable:
                     
                 for link, packet in data.items():
                     if flow == packet["Flow"]:
-                        print(f"time = {time}, link = {link}   flow = {flow}")
+                        #print(f"time = {time}, link = {link}   flow = {flow}")
                         if pop_dic.get(time)==None:
                             pop_dic[time] = []
                         pop_dic[time].append(link)
@@ -48,7 +48,7 @@ class TimeTable:
                 for link in links:
                     if time == time_p and link in data.keys():
                         self.time_table[time].pop(link)
-                        print(f"del   {time} {link}   packet")
+                       # print(f"del   {time} {link}   packet")
                   
         
         

@@ -8,13 +8,13 @@ class InitFlowFilter:
     #應該要將比較方法放在時間表(time_table)裡面進行，會有比較高的可調整性。(但這邊想說一次處理，先利用path_dic執行看看，之後有機會再做模組化調整)
     def init_flows_filter(self): 
         
-        #先將時間放入各Flow的path中的first link，並計算path size
+        #先將時間放入各Flow的path中的first link
         for flow, path in self.flow_paths_dic.items():    
-            time_list = self.genarate_time_slot(flow, len(path))
+            time_list = self.genarate_time_slot(flow)
             self.time_table_maintainer.first_link_set_up(flow, path[0], time_list)
        
     #加入時間
-    def genarate_time_slot(self, flow, path_length):
+    def genarate_time_slot(self, flow):
         time_list = {}
         start = self.flow_dic[flow]["StartTime"]
         period = self.flow_dic[flow]["Period"]

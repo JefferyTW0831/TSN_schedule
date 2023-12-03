@@ -6,7 +6,7 @@ class Topology:
         self.flow_dic = flow_dic
         self.links = {}
         self.path_dic = {}
-        self.load_links("links.txt")
+        self.load_links("C:\\Users\\jeffe\\OneDrive\\桌面\\雲端硬碟資料夾\\report\\地安\\TSN_schedule\\schedule_ver5\\network_datas\\links.txt")
         self.create_reverse_links()
 
     def load_links(self, links_file):

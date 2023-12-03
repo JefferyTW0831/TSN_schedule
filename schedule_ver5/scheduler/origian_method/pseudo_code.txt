@@ -1,63 +1,62 @@
-Fn = {F1,F2,F3.....,Fn}
-Srcn(源), Dstn(末), STn(開始時間), Pn(週期), Tn(次數), Sn(大小), Dn(截止) 屬於 Fn   
+Flow = flow_dic = {flow_name:{"Src", "Dst", "StartTime", "Period", "Times", "Size", "Deadline"}}
 
-P = flow_paths_dic = {F1.P, F2.p, F3.P,..., Fn.P}
-Fn.P = {link1,link2,link3,...linkn}
+Path = flow_paths_dic = {flow_name:[link1, link2, ... , linkn]}
 
-Table = time_table
-結構：{time:{link:packet}},  packet = {Fn, STn, Dn}
+Table = time_table = {time:{link:packet}},  packet = {"Flow_Name", "Packet_num", "StartTime", "Deadline"}
 
-Sort = flow_sort_list(flow優先順序)
+Sort = flow_sort_list = [flow_name]
 
 ---------------------------------------------------------------------------------------
-def scheduling:
-    Input：Fn、Path、Table、Sort
+def full_schedule_forward:
+    Input：Flow、Path、Table、Sort
     OutPut：Table、fail_flows
 
-    for sorted_flow in Sort:
-        設置flow的first_link需佔用的時間點 =>Table[time] = {link:packet}  
-        如果發生衝突，放棄此flow => fail_flows.append(sorted_flow)
+    #full_schedule → 這邊需要reverse Sort 來鬆弛網路占用密度    #要細講
+    for target_flow in reverse(Sort):                                          
+        Path[target_flow].first_link => Table[time] = {link:packet}  
+        如果發生衝突，放棄此flow => fail_flows.append(target_flow)
 
-    #挑選出剩餘可排程的flows
-    Sort.pop(sorted_flow)
+    #去掉放棄的flows
+    Sort.pop(fail_flows)
 
-    for time in range(1, 201):   
-        for flow in Sort:
+    #開始排程
+    for time in range(1, max_time):   
+        for target_flow in Sort:
             #從封包找到對應的flow
             for link, packet in Table[time].items():  
-                if flow == packet[flow]:
-                    next_link = Path[packet[flow].next_link] 
+                if target_flow == packet["Flow_Name"]:
+                    next_link = Path[packet["Flow_Name"].next_link] 
 
                     #如果還沒到最後一條link表示還有next_link
                     if next_link:
                         if Table[time+1][next_link] != None:
-                            reschedule.update(time+1:{link:packet})
+                            reschedule.update(time+1:{next_link:packet})
                         else
                             Table[time+1] <= {next_link:packet}
                     break
 
 if reschedule:
-    rescheduling(reschedule, flow_sort_list)
+    rescheduling(reschedule, Flow, Path, Table, Sort)
 
 
 #此有利用遞迴方式排程
 def rescheduling:
 
-    Input：Fn、P、Table、Sort、reschedule
+    Input：Flow、P、Table、Sort、reschedule
     OutPut：Table、fail_flows
 
     remaining_schedule = {}
 
     #依照sort順序，在reschedule裡面找flow並排程
-    for flow in Sort:
+    for target_flow in Sort:
         for time, data in reschedule.items():
             for link, packet in data.items():
 
                 #遇到deadline或是排入時間表則跳出迴圈，沒有的話就往下一個時間點看
                 while NOT_SET == True:
-                    if flow == packet[flow]:
-                        if time >= packet[flow]:
-                            fail_flows.append[packet[flow]]
+                    if target_flow == packet["Flow_Name"]:
+                        if time >= packet["Deadline"]:
+                            fail_flows.append[packet["Flow_Name"]]
                             NOT_SET = False
                         else:
                             if Table[time].get(link) == None:
@@ -66,7 +65,7 @@ def rescheduling:
                             else:
                                 time += 1
 
-                next_link = Path[packet[flow].next_link] 
+                next_link = Path[packet["Flow_Name"].next_link] 
 
                 #如果還沒到最後一條link表示還有next_link
                 if next_link:

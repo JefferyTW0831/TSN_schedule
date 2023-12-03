@@ -10,8 +10,10 @@ class ScheduleMiddle:
     def schedule_middle(self):
         reschedule = {}
         self.set_deadline()
+        #計算max_time
+        max_time = self.get_max_time()
       
-        for time in range (201,-1,-1):
+        for time in range (max_time,-1,-1):
             if self.time_table.get(time) != None:
                 for link1, packet in self.time_table[time].items():
                     prev_link = ()
@@ -41,7 +43,15 @@ class ScheduleMiddle:
                     
         if reschedule:
             self.rescheduling(reschedule)
-       
+    def get_max_time(self):
+        max_value = None
+        for flow, data in self.flow_dic.items():
+            flow_deadline_time = data["StartTime"]+data["Period"]*(data["Times"]-1)+data["Deadline"]
+            if max_value == None or flow_deadline_time > max_value:
+                max_value = flow_deadline_time
+                max_flow = flow
+        print(f"Max_time : {max_flow, max_value}")
+        return max_value  
 
 
     def rescheduling(self, reschedule):
@@ -86,10 +96,6 @@ class ScheduleMiddle:
                        
         if remaining_schedule:
             self.rescheduling(remaining_schedule)
-
-
-
-
         
     
     def set_deadline(self):
@@ -104,6 +110,7 @@ class ScheduleMiddle:
                     deadline_dic.update({packet["Tolerant"]:{last_link:packet}})
                 elif last_link not in deadline_dic[packet["Tolerant"]]:
                     deadline_dic[packet["Tolerant"]].update({last_link:packet})
+                #假如table有deadline時間
                 else:
                     if reschedule_flows.get(last_link) == None:
                         reschedule_flows[last_link] = []

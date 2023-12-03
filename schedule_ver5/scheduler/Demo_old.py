@@ -19,7 +19,6 @@ class Demo(QGraphicsView):
         self.cell_height = 30
 
         self.grid_line_color = QColor("black")
-        self.flow_color = {}
 
         self.draw_grid()
 
@@ -50,20 +49,37 @@ class Demo(QGraphicsView):
 
     def update_graphics_from_dict(self, data_dict):
         collision_dict = {}
-        for time, links in data_dict.items():
-            
-            for link, packet_data in links.items():
-                color = self.flow_color_set(packet_data["Flow"])
-                y = list(self.links_dic.keys()).index(link)
-
-                #沒有衝突狀況發生，正常印出顏色
-                rect = QGraphicsRectItem(time * self.cell_width, y * self.cell_height, 1 * self.cell_width, 1 * self.cell_height)
-                rect.setBrush(QColor(color))
-                self.scene.addItem(rect)
-                text_item2 = QGraphicsSimpleTextItem(str(packet_data["Flow"])+'_'+str(packet_data["Packet"]))
-                text_item2.setPos(time * self.cell_width + 0.5, y * self.cell_height + 15)
-                text_item2.setBrush(QColor("White"))  # 设置字体颜色
-                self.scene.addItem(text_item2)
+        
+        for flow_name, path in data_dict.items():
+            random_color = self.generate_random_color()
+            for link in path:
+                target_key = (link["Ingress"],link["Egress"]) 
+                y = list(self.links_dic.keys()).index(target_key)
+                x = link["Time"]
+                for time, size_index in x.items():
+                    
+                    if self.is_color_at_position(time * self.cell_width + 0.5, y * self.cell_height + 0.5):                 #衝突狀況發生 顯示黑色點點
+                        rect = QGraphicsRectItem(time * self.cell_width, y * self.cell_height, 0.3 * self.cell_width, 0.3 * self.cell_height)
+                        rect.setBrush(QColor("black"))
+                        self.scene.addItem(rect)
+                        if collision_dict.get(target_key) == None:
+                            collision_dict[target_key] = {}
+                            collision_dict[target_key][time] = []
+                            collision_dict[target_key][time].append(flow_name)
+                        elif collision_dict[target_key].get(time) == None:
+                            collision_dict[target_key][time] = []
+                            collision_dict[target_key][time].append(flow_name)
+                        else:
+                            collision_dict[target_key][time].append(flow_name)
+                    
+                    else:                                                                                                   #沒有衝突狀況發生，正常印出顏色
+                        rect = QGraphicsRectItem(time * self.cell_width, y * self.cell_height, 1 * self.cell_width, 1 * self.cell_height)
+                        rect.setBrush(QColor(random_color))
+                        self.scene.addItem(rect)
+                        text_item2 = QGraphicsSimpleTextItem(str(size_index["Flow"])+'_'+str(size_index["Packet"]))
+                        text_item2.setPos(time * self.cell_width + 0.5, y * self.cell_height + 15)
+                        text_item2.setBrush(QColor("White"))  # 设置字体颜色
+                        self.scene.addItem(text_item2)
         print("\n\n-----------------------------------")
         print("(Demo.py)\n")
         print(f"collision flows=")
@@ -83,20 +99,6 @@ class Demo(QGraphicsView):
         blue = random.randint(1, 250)
         color = QColor(red, green, blue)
         return color
-    
-
-
-    def flow_color_set(self, flow_name):
-        if flow_name in self.flow_color.keys():
-            return self.flow_color[flow_name]
-        else:
-            random_color = self.generate_random_color()
-            self.flow_color[flow_name] = random_color
-            return random_color
-
-
-
-
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)

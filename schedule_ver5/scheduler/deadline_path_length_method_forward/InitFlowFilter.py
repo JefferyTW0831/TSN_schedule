@@ -16,7 +16,7 @@ class InitFlowFilter:
             path = self.flow_paths_dic[flow]
             time_list = self.genarate_time_slot(flow)
             self.time_table_maintainer.first_link_set_up(flow, path[0], time_list)
-    def sort_flow(self):   # this PR means deadline/path_length
+    def sort_flow(self):   # this PR means deadline/path_length，越小越緊急，由小到大排列
         piority_dic = {}
         for flow, path in self.flow_paths_dic.items():
             deadline = self.flow_dic[flow]["Deadline"] 
@@ -25,6 +25,7 @@ class InitFlowFilter:
         # 使用sorted函數，依據字典的值進行排序，並取得排序後的鍵值清單
         sorted_keys = sorted(piority_dic, key=piority_dic.get)
         self.flow_PR_sortlist = sorted_keys
+        print(f"PR: {self.flow_PR_sortlist}")
        
     #加入時間
     #Flow = 名稱, Packet = 封包編號, piority = 最大容忍時間/路徑長度(結果越小優先)

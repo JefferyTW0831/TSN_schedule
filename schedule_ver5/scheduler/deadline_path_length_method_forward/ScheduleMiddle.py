@@ -8,7 +8,10 @@ class ScheduleMiddle:
         self.fail_flow = []
     def schedule_middle(self):
         reschedule = {}
-        for time in range(0,201):
+        #計算max_time
+        max_time = self.get_max_time()
+
+        for time in range(0,max_time):
 
             if self.time_table.get(time) != None:
                 #依據當前時間所佔據在link上的Packets，取得他下一條是哪條link，並排程他近期可以占用的時間
@@ -38,7 +41,18 @@ class ScheduleMiddle:
         if reschedule:
             #print(f"\n\n重新排程：{reschedule}\n")
             self.rescheduling(reschedule)
-            
+
+    def get_max_time(self):
+        max_value = None
+        for flow, data in self.flow_dic.items():
+            flow_deadline_time = data["StartTime"]+data["Period"]*(data["Times"]-1)+data["Deadline"]
+            if max_value == None or flow_deadline_time > max_value:
+                max_value = flow_deadline_time
+                max_flow = flow
+        print(f"Max_time : {max_flow, max_value}")
+        return max_value
+
+
     def rescheduling(self, reschedule):
         print(f"\n\n重新排程：\n")
         for time, data in reschedule.items():
@@ -61,7 +75,6 @@ class ScheduleMiddle:
                             if time >= packet["Tolerant"]:
                                 if packet['Flow'] not in self.fail_flow:
                                     self.fail_flow.append(packet['Flow'])  
-                        
                             set_up = False
                         else:
                             time += 1
