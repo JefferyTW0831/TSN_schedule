@@ -4,6 +4,7 @@ from PyQt5.QtWidgets import QApplication
 from network_datas.InputFlow import InputFlow
 from network_datas.Topology import Topology
 from scheduler.Scheduler_swicth import SchedulerSwitch
+from new_scheduler.ObjectSwicth import ObjectSwitch
 from scheduler.Demo import Demo
 
 
@@ -30,7 +31,14 @@ def main():
 
  
     #選擇方法
-    scheduler_choose = SchedulerSwitch(topology)
+    version_swicth = input("1.原版  else.整合版\n")
+    if version_swicth == "1":
+        #---原版 施工中---#
+        scheduler_choose = SchedulerSwitch(topology)
+    else:
+        #---整合版 施工中---#
+        scheduler_choose = ObjectSwitch(topology)
+
     #排程結果資料取得
     scheduled_data = scheduler_choose.run()
     
