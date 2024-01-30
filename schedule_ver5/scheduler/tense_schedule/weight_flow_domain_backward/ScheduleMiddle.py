@@ -7,7 +7,6 @@ class ScheduleMiddle:
         self.time_table = time_table_maintainer.time_table  #dict
         self.fail_flow = []
 
-
     def schedule_middle(self, flow_PR_sortlist):
         self.set_deadline(flow_PR_sortlist)
         max_time = self.get_max_time()
@@ -50,7 +49,6 @@ class ScheduleMiddle:
                                         else:
                                             target_time -= 1
                             
-      
     def get_max_time(self):
         max_value = None
         for flow, data in self.flow_dic.items():
@@ -62,8 +60,7 @@ class ScheduleMiddle:
         return max_value
     
     def set_deadline(self, flow_PR_sortlist):
-        deadline_dic = {}
-     
+        deadline_dic = {}  
         for target_flow in flow_PR_sortlist:
             for time, data in reversed(self.time_table.items()):
                 for first_link, packet in data.items():

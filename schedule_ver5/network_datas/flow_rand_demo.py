@@ -2,7 +2,7 @@ import json
 
 
 def main():
-    with open('flow_data.json', 'r') as json_file:
+    with open('network_datas/flow_data.json', 'r') as json_file:
         flow_dic = json.load(json_file)
     demo_flows(flow_dic)    
     

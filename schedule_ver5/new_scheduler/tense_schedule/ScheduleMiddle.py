@@ -3,20 +3,25 @@ class ScheduleMiddle:
     def __init__(self, flow_dic, flow_paths_dic, time_table_maintainer, driving_mode, direction):
         self.flow_dic = flow_dic
         self.flow_paths_dic = flow_paths_dic
+        self.time_table_maintainer = time_table_maintainer
         self.time_table = time_table_maintainer.time_table  #dict
-        self.fail_flow = []
+        self.fail_flows = []
         self.driving_mode = driving_mode
         self.direction = direction
 
     def schedule_middle(self, flow_PR_sortlist):
-        #print("---------------------這邊有執行到-----------------------")
         if self.driving_mode == "Time":
+            print(f"Time_{self.direction}")
             self.time_driving(flow_PR_sortlist)
         elif self.driving_mode == "Flow":
+            print(f"Flow_{self.direction}")
             self.flow_driving(flow_PR_sortlist)
         else:
             flow_PR_sortlist = self.flow_dic.keys()
             self.original(flow_PR_sortlist)
+            
+        self.time_table_maintainer.middle_fail_flows = self.fail_flows
+        
 
     def get_max_time(self):
         max_value = None
@@ -25,7 +30,7 @@ class ScheduleMiddle:
             if max_value == None or flow_deadline_time > max_value:
                 max_value = flow_deadline_time
                 max_flow = flow
-        print(f"Max_time : {max_flow, max_value}")
+        print(f"Last_flow: {max_flow} , Max_time: {max_value}")
         return max_value
     
     def time_driving(self, flow_PR_sortlist):
@@ -80,8 +85,8 @@ class ScheduleMiddle:
                                 not_set = True
                                 while not_set:
                                     if target_time >= packet["Tolerant"]:
-                                        if packet['Flow'] not in self.fail_flow:
-                                            self.fail_flow.append(packet['Flow'])   
+                                        if packet["Flow"] not in self.fail_flows:
+                                            self.fail_flows.append(packet["Flow"])   
                                         not_set = False
                                     #如果time+1沒有被建立
                                     elif self.time_table.get(target_time) == None:
@@ -160,8 +165,8 @@ class ScheduleMiddle:
             not_set = True
             while not_set:
                 if target_time >= packet["Tolerant"]:
-                    if packet['Flow'] not in self.fail_flow:
-                        self.fail_flow.append(packet['Flow'])   
+                    if packet["Flow"] not in self.fail_flows:
+                        self.fail_flows.append(packet["Flow"])   
                     not_set = False
                 #如果time+1沒有被建立
                 elif self.time_table.get(target_time) == None:
@@ -184,8 +189,8 @@ class ScheduleMiddle:
             not_set = True
             while not_set:
                 if target_time <= packet["StartTime"]:
-                    if packet['Flow'] not in self.fail_flow:
-                        self.fail_flow.append(packet['Flow'])   
+                    if packet["Flow"] not in self.fail_flows:
+                        self.fail_flows.append(packet["Flow"])   
                     not_set = False
                 #如果time+1沒有被建立
                 elif self.time_table.get(target_time) == None:

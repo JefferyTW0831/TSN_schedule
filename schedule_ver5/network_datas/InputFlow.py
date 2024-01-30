@@ -3,10 +3,19 @@ import json
 class InputFlow:
 
     def __init__(self):
-        pass
-        
+        self.max_time = None
+        self.flow_dic = None
         
     def run(self):
-        with open('c:\\Users\\jeffe\\OneDrive\\桌面\\雲端硬碟資料夾\\report\\地安\\TSN_schedule\\schedule_ver5\\network_datas\\flow_data.json', 'r') as json_file:
-            flow_dic = json.load(json_file)
-            return flow_dic
+        with open('network_datas/flow_data.json', 'r') as json_file:
+            self.flow_dic = json.load(json_file)
+            return self.flow_dic
+        
+    def cal_max_time(self):
+        max_value = None
+        for flow, data in self.flow_dic.items():
+            flow_deadline_time = data["StartTime"]+data["Period"]*(data["Times"]-1)+data["Deadline"]
+            if max_value == None or flow_deadline_time > max_value:
+                max_value = flow_deadline_time
+        return max_value
+

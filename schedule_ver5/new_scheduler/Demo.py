@@ -6,14 +6,14 @@ import random
 
 
 class Demo(QGraphicsView):
-    def __init__(self, links_dic):
+    def __init__(self, links_dic, max_time):
         super().__init__()
 
         self.scene = QGraphicsScene(self)
         self.setScene(self.scene)
         self.links_dic = links_dic
 
-        self.grid_size_x = 201
+        self.grid_size_x = max_time+1
         self.grid_size_y = self.links_dic
         self.cell_width = 30
         self.cell_height = 30
