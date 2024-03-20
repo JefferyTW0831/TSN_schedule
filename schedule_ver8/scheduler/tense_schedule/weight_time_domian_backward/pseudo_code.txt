@@ -1,0 +1,44 @@
+def set_deadline:
+    Input：Table、Sort
+    OutPut：Table、fail_flows
+
+    deadline_dic = {}
+    reschedule_flows = {}
+    fail_flow = []
+
+    #從最後時間往回看
+    for time in range (max_time,-1,-1):
+        #按照排序
+        for target_flow in Sort:
+            #在時間格上看有哪些link有packet
+            for link, packet in Table[time].items():
+                if target_flow == packet["Flow_Name"]:
+                    #取last_link
+                    last_link = (Path[packet["Flow"]].last_link)
+                    #假如當前時間當前link有被占用
+                    if  packet["Deadline"] in Table:
+                        reschedule_flows[last_link].append(packet)
+                    #假如當前時間當前link有可用空間
+                    else:
+                        Table[packet["Deadline"]] <= {next_link:packet}
+    #重新考慮
+    if reschedule_flows:
+        self.deadline_reschedule(reschedule_flows)
+
+def deadline_reschedule(self, reschedule):
+
+    for link, packets_list in reschedule.items():
+        for target_flow in Sort:
+            for packet in packets_list:
+                if target_flow == packet["Flow_Name"]:
+                    #packet未排好
+                    Set = False 
+                    #依照packet屬性，從他的deadline往前搜尋到
+                    for time in range(packet["Deadline"], packet["StartTime"],-1):
+                        if link not in Table[time]:
+                            Table[time][link] = packet
+                            Set = True
+                            break
+                    #如果packet還是沒排程到
+                    if Set == False and packet["Flow"] not in self.fail_flow:
+                        self.fail_flow.append(packet["Flow"])

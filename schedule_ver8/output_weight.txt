@@ -1,0 +1,70 @@
+scheduler1
+scheduled flows =  ['F3', 'F7', 'F9', 'F11', 'F14', 'F16', 'F20'], total : 7 flows
+scheduhle1 :
+scheuled_flows = ['F3', 'F7', 'F9', 'F11', 'F14', 'F16', 'F20']
+amount = 7
+
+------------------------------
+scheduler2
+scheduled flows =  ['F3', 'F7', 'F9', 'F11', 'F14', 'F16', 'F20'], total : 7 flows
+scheduhle2 :
+scheuled_flows = ['F3', 'F7', 'F9', 'F11', 'F14', 'F16', 'F20']
+amount = 7
+
+------------------------------
+scheduler3
+scheduled flows =  ['F3', 'F4', 'F7', 'F9', 'F11', 'F14', 'F16', 'F20'], total : 8 flows
+scheduhle3 :
+scheuled_flows = ['F3', 'F4', 'F7', 'F9', 'F11', 'F14', 'F16', 'F20']
+amount = 8
+
+------------------------------
+scheduler4
+scheduled flows =  ['F3', 'F4', 'F7', 'F9', 'F11', 'F14', 'F16', 'F20'], total : 8 flows
+scheduhle4 :
+scheuled_flows = ['F3', 'F4', 'F7', 'F9', 'F11', 'F14', 'F16', 'F20']
+amount = 8
+
+------------------------------
+scheduler5
+scheduled flows =  ['F3', 'F4', 'F7', 'F9', 'F11', 'F14', 'F16', 'F20'], total : 8 flows
+scheduhle5 :
+scheuled_flows = ['F3', 'F4', 'F7', 'F9', 'F11', 'F14', 'F16', 'F20']
+amount = 8
+
+------------------------------
+scheduler1
+scheduled flows =  ['F3', 'F7', 'F9', 'F11', 'F14', 'F16', 'F20'], total : 7 flows
+scheduhle1 :
+scheuled_flows = ['F3', 'F7', 'F9', 'F11', 'F14', 'F16', 'F20']
+amount = 7
+
+------------------------------
+scheduler2
+scheduled flows =  ['F3', 'F7', 'F9', 'F11', 'F14', 'F16', 'F20'], total : 7 flows
+scheduhle2 :
+scheuled_flows = ['F3', 'F7', 'F9', 'F11', 'F14', 'F16', 'F20']
+amount = 7
+
+------------------------------
+scheduler3
+scheduled flows =  ['F3', 'F4', 'F7', 'F9', 'F11', 'F14', 'F16', 'F20'], total : 8 flows
+scheduhle3 :
+scheuled_flows = ['F3', 'F4', 'F7', 'F9', 'F11', 'F14', 'F16', 'F20']
+amount = 8
+
+------------------------------
+scheduler4
+scheduled flows =  ['F3', 'F4', 'F7', 'F9', 'F11', 'F14', 'F16', 'F20'], total : 8 flows
+scheduhle4 :
+scheuled_flows = ['F3', 'F4', 'F7', 'F9', 'F11', 'F14', 'F16', 'F20']
+amount = 8
+
+------------------------------
+scheduler5
+scheduled flows =  ['F3', 'F4', 'F7', 'F9', 'F11', 'F14', 'F16', 'F20'], total : 8 flows
+scheduhle5 :
+scheuled_flows = ['F3', 'F4', 'F7', 'F9', 'F11', 'F14', 'F16', 'F20']
+amount = 8
+
+------------------------------
