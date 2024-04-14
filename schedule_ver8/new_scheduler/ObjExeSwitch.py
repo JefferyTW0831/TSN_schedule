@@ -1,7 +1,9 @@
 from new_scheduler.Execution import RunData
 from new_scheduler.Execution import RunDemo
-from new_scheduler.full_schedule.FullScheduler import FullSchedulerContinue
-from new_scheduler.full_schedule.FullScheduler import FullSchedulerReschedule
+from new_scheduler.Execution import RunMatPlotLibTense
+from new_scheduler.Execution import RunMatPlotLibReschedule
+from new_scheduler.full_schedule.FullSchedulerContinue import FullSchedulerContinue
+from new_scheduler.full_schedule.FullSchedulerReschedule import FullSchedulerReschedule
 from new_scheduler.tense_schedule.TenseScheduler import TenseScheduler
 
 objective = {
@@ -17,7 +19,7 @@ class ObjectiveSwitch:
     def run(self):
         chosen = self.print_object_message()
         #方法選擇
-        scheduler = ExeSwitch(objective[chosen])
+        scheduler = ExeSwitch(chosen)
         scheduler.run()
 
     def print_object_message(self):
@@ -36,9 +38,15 @@ class ObjectiveSwitch:
                 print("請輸入有效的數字。")
         return chosen
     
-execution = {
+execution_tense = {
     1:RunData,
-    2:RunDemo
+    2:RunDemo,
+    3:RunMatPlotLibTense,
+}
+
+execution_reschedule = {
+    1:RunDemo,
+    2:RunMatPlotLibReschedule
 }
 
 class ExeSwitch:
@@ -46,14 +54,33 @@ class ExeSwitch:
         self.object_chosen = object_chosen
 
     def run(self):
-        chosen = self.print_execution_message()
-        
-        execution[chosen](self.object_chosen).run()
+        if self.object_chosen == 1:
+            chosen = self.print_execution_tense()
+            execution_tense[chosen](objective[self.object_chosen]).run()
+        else:
+            chosen = self.print_execution_rescheudle()
+            execution_reschedule[chosen](objective[self.object_chosen]).run()
+
     
-    def print_execution_message(self):
+    def print_execution_tense(self):
         print("選擇執行方式(full_schedule目前要一個一個測，所以不要用全部執行):")
         print("1.全部執行")
-        print("2.則一方法執行(會跑圖)")
+        print("2.則一方法執行(會跑TimeTable圖)")
+        print("3.跑統計圖表")
+        while True:
+            try:
+                chosen = int(input("請輸入1到3之間的數字："))
+                if 1 <= chosen <= 3:
+                    break
+                else:
+                    print("請輸入1到3之間的數字。")
+            except ValueError:
+                print("請輸入有效的數字。")
+        return chosen
+
+    def print_execution_rescheudle(self):
+        print("1.則一方法執行(會跑TimeTable圖)")
+        print("2.跑統計圖表")
         while True:
             try:
                 chosen = int(input("請輸入1到2之間的數字："))
@@ -64,4 +91,3 @@ class ExeSwitch:
             except ValueError:
                 print("請輸入有效的數字。")
         return chosen
-

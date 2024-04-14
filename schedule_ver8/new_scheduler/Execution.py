@@ -160,7 +160,7 @@ class RunDemo:
                 print("請輸入有效的數字。")
         return chosen
 
-class RunMatPlotLibOne:
+class RunMatPlotLibTense:
     def __init__(self, object_chosen):
         self.object_chosen = object_chosen
     
@@ -240,7 +240,7 @@ class RunMatPlotLibOne:
                 print("請輸入有效的數字。")
         return chosen
     
-class RunMatPlotLibTwo:
+class RunMatPlotLibReschedule:
     def __init__(self, object_chosen):
         self.object_chosen = object_chosen
 
@@ -253,36 +253,37 @@ class RunMatPlotLibTwo:
 
         fig, ax = plt.subplots(2,2,constrained_layout = True)
         data_dict = {}
+        sort_mode_num = self.sort_mode_chosen()
 
-        for sort_mode_num in(1,5):
-
-            for i in range(1, 6):
-                print(f"{mode[i]['driving_mode']}_{mode[i]['direction']}")
-                scheduler = self.object_chosen(topology, 2, mode[i]["driving_mode"], mode[i]["direction"],sort_mode[sort_mode_num])
-                
-                #得到時間表
-                scheudled_data = scheduler.scheduling()
+        for i in range(1, 6):
+            print(f"{mode[i]['driving_mode']}_{mode[i]['direction']}")
+            scheduler = self.object_chosen(topology, 2, mode[i]["driving_mode"], mode[i]["direction"],sort_mode[sort_mode_num])
             
-                flow, max_time = Genarators.get_last_time(scheudled_data)
+            #得到時間表
+            scheudled_data = scheduler.scheduling()
+        
+            flow, max_time = Genarators.get_last_time(scheudled_data)
 
-                data_dict[f"scheduler{i}"] = max_time
+            data_dict[f"scheduler{i}"] = max_time
 
-            mapping = {"scheduler1":"Original",
-                    "scheduler2":"Time_forward",
-                    "scheduler3":"Time_backward", 
-                    "scheduler4":"Flow_forward", 
-                    "scheduler5":'Flow_backward'
-            }
+        mapping = {"scheduler1":"Original",
+                "scheduler2":"Time_forward",
+                "scheduler3":"Time_backward", 
+                "scheduler4":"Flow_forward", 
+                "scheduler5":'Flow_backward'
+        }
 
-            #五種scheduler + max_time :: new_dict = {scheduler1 : max_time, ...}
-            new_dict = {mapping[key]: value for key, value in data_dict.items()}
+        #五種scheduler + max_time :: new_dict = {scheduler1 : max_time, ...}
+        new_dict = {mapping[key]: value for key, value in data_dict.items()}
 
-            schedulers = list(new_dict.keys())
-            max_time = list(new_dict.values())
-            
-            x, y =self.dec_to_bin(sort_mode_num)
-            ax[x,y].set_title(sort_mode[sort_mode_num])
-            ax[x,y].plot(schedulers, max_time, 'ro-')
+        schedulers = list(new_dict.keys())
+        max_time = list(new_dict.values())
+        
+        plt.bar(schedulers, max_time)
+
+        plt.title('Scheduler')
+        plt.xlabel('Schedulers')
+        plt.ylabel('Max_Time')
 
 
         plt.show()       
@@ -290,3 +291,20 @@ class RunMatPlotLibTwo:
 
     def dec_to_bin(self, num):
         return num/2, num%2
+    
+    def sort_mode_chosen(self):
+        print(f"選擇初始篩選方法:")
+        print("1.原始(按照flow名稱)")
+        print("2.按照權重")
+        print("3.先找出衝突組合，每個組合裡擁有最多的flows的子組合將勝選")
+        print("4.包容力排序")
+        while True:
+            try:
+                chosen = int(input("請輸入1到4之間的數字："))
+                if 1 <= chosen <= 4:
+                    break
+                else:
+                    print("請輸入1到4之間的數字。")
+            except ValueError:
+                print("請輸入有效的數字。")
+        return chosen
