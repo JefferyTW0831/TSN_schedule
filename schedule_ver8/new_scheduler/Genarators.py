@@ -8,6 +8,13 @@ def get_max_time(flow_dic):
     print(f"Last_flow: {max_flow} , Max_time: {max_value}")
     return max_value
     
+
+def get_last_time(time_table):
+    max_time = max(time_table.keys())
+    flow = time_table[max_time][list(time_table[max_time].keys())[0]]["Flow"]
+    return flow, max_time
+
+
 #加入時間
 #Flow = 名稱, Packet = 封包編號, piority = 最大容忍時間/路徑長度(結果越小優先)
 def genarate_time_slot(flow, flow_dic):
