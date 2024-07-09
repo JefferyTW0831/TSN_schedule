@@ -1,0 +1,11 @@
+{
+  "F1": {
+    "Src": "D1",
+    "Dst": "D7",
+    "StartTime": 30,
+    "Period": 10,
+    "Times": 6,
+    "Size": 3,
+    "Deadline": 10
+  }
+}

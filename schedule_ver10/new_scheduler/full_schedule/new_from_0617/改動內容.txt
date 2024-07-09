@@ -1,0 +1,16 @@
+FullSchedulerReschedule.py:
+1.
+原：
+進入到每個時間點時，先產生time_list並嘗試排入時間表，若發現排不進去就更新時間指針。
+改：
+進入到時間點時，先判斷該link有沒有占用，若被占用就更新時間指針。直到找到無被占用的時間_link才產生time_list
+
+2.
+將sorting更改至SortFlow.py
+
+
+
+RescheduleMiddle.py:
+1.
+原：包含各種mode
+改：許消mode，同時改進迴圈判斷：從0~maxtime改成只看time_list上的時間。

@@ -1,0 +1,182 @@
+{
+  "F1": {
+    "Src": "D3",
+    "Dst": "D5",
+    "StartTime": 4,
+    "Period": 14,
+    "Times": 5,
+    "Size": 2,
+    "Deadline": 14
+  },
+  "F2": {
+    "Src": "D2",
+    "Dst": "D7",
+    "StartTime": 5,
+    "Period": 16,
+    "Times": 5,
+    "Size": 3,
+    "Deadline": 12
+  },
+  "F3": {
+    "Src": "D5",
+    "Dst": "D2",
+    "StartTime": 0,
+    "Period": 13,
+    "Times": 7,
+    "Size": 3,
+    "Deadline": 11
+  },
+  "F4": {
+    "Src": "D7",
+    "Dst": "D1",
+    "StartTime": 3,
+    "Period": 11,
+    "Times": 5,
+    "Size": 3,
+    "Deadline": 10
+  },
+  "F5": {
+    "Src": "D5",
+    "Dst": "D2",
+    "StartTime": 0,
+    "Period": 17,
+    "Times": 7,
+    "Size": 3,
+    "Deadline": 15
+  },
+  "F6": {
+    "Src": "D5",
+    "Dst": "D1",
+    "StartTime": 0,
+    "Period": 14,
+    "Times": 5,
+    "Size": 2,
+    "Deadline": 12
+  },
+  "F7": {
+    "Src": "D4",
+    "Dst": "D1",
+    "StartTime": 3,
+    "Period": 10,
+    "Times": 5,
+    "Size": 3,
+    "Deadline": 10
+  },
+  "F8": {
+    "Src": "D3",
+    "Dst": "D6",
+    "StartTime": 2,
+    "Period": 10,
+    "Times": 6,
+    "Size": 2,
+    "Deadline": 10
+  },
+  "F9": {
+    "Src": "D3",
+    "Dst": "D2",
+    "StartTime": 1,
+    "Period": 12,
+    "Times": 7,
+    "Size": 2,
+    "Deadline": 10
+  },
+  "F10": {
+    "Src": "D2",
+    "Dst": "D5",
+    "StartTime": 5,
+    "Period": 18,
+    "Times": 7,
+    "Size": 3,
+    "Deadline": 13
+  },
+  "F11": {
+    "Src": "D6",
+    "Dst": "D2",
+    "StartTime": 5,
+    "Period": 15,
+    "Times": 6,
+    "Size": 2,
+    "Deadline": 10
+  },
+  "F12": {
+    "Src": "D1",
+    "Dst": "D5",
+    "StartTime": 1,
+    "Period": 13,
+    "Times": 5,
+    "Size": 2,
+    "Deadline": 13
+  },
+  "F13": {
+    "Src": "D4",
+    "Dst": "D2",
+    "StartTime": 5,
+    "Period": 20,
+    "Times": 6,
+    "Size": 3,
+    "Deadline": 12
+  },
+  "F14": {
+    "Src": "D4",
+    "Dst": "D6",
+    "StartTime": 0,
+    "Period": 13,
+    "Times": 6,
+    "Size": 2,
+    "Deadline": 12
+  },
+  "F15": {
+    "Src": "D2",
+    "Dst": "D7",
+    "StartTime": 0,
+    "Period": 20,
+    "Times": 5,
+    "Size": 2,
+    "Deadline": 13
+  },
+  "F16": {
+    "Src": "D6",
+    "Dst": "D5",
+    "StartTime": 1,
+    "Period": 10,
+    "Times": 6,
+    "Size": 2,
+    "Deadline": 10
+  },
+  "F17": {
+    "Src": "D2",
+    "Dst": "D6",
+    "StartTime": 3,
+    "Period": 19,
+    "Times": 6,
+    "Size": 3,
+    "Deadline": 15
+  },
+  "F18": {
+    "Src": "D6",
+    "Dst": "D2",
+    "StartTime": 4,
+    "Period": 18,
+    "Times": 7,
+    "Size": 2,
+    "Deadline": 13
+  },
+  "F19": {
+    "Src": "D1",
+    "Dst": "D4",
+    "StartTime": 4,
+    "Period": 16,
+    "Times": 5,
+    "Size": 3,
+    "Deadline": 12
+  },
+  "F20": {
+    "Src": "D6",
+    "Dst": "D4",
+    "StartTime": 1,
+    "Period": 10,
+    "Times": 6,
+    "Size": 2,
+    "Deadline": 10
+  }
+}
