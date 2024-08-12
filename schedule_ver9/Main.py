@@ -1,8 +1,11 @@
 # -*- coding: utf-8 -*-
 from new_scheduler.ObjExeSwitch import ObjectiveSwitch
+import sys
 
 def main():
-    scheduler_choose = ObjectiveSwitch()
-    scheduler_choose.run()
-        
+
+    objsw = ObjectiveSwitch()
+    objsw.run()
+  
 main()
+    

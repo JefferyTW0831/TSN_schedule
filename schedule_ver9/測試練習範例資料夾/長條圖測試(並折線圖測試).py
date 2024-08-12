@@ -2,13 +2,13 @@ import matplotlib.pyplot as plt
 
 def three_data_bar_chart():
     # 數據
-    x = [1, 2, 3, 4, 5]
-    x_offsets = [-0.2, 0, 0.2]  # 每組數據的水平偏移量
+    x = [10, 20, 30, 40, 50]
+    x_offsets = [-2, 0, 2]  # 每組數據的水平偏移量
     h1 = [10, 20, 30, 40, 50]   # 第一組數據高度
     h2 = [20, 10, 40, 50, 30]   # 第二組數據高度
     h3 = [15, 25, 35, 45, 55]   # 第三組數據高度
 
-    bar_width = 0.2  # 長條圖寬度
+    bar_width = 2  # 長條圖寬度
 
     # 繪製長條圖
     for i, data in enumerate([h1, h2, h3]):

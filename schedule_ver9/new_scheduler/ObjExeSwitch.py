@@ -64,9 +64,9 @@ class ExeSwitch:
     
     def print_execution_tense(self):
         print("選擇執行方式(full_schedule目前要一個一個測，所以不要用全部執行):")
-        print("1.全部執行")
+        print("1.原本僅存資料用")
         print("2.則一方法執行(會跑TimeTable圖)")
-        print("3.跑統計圖表")
+        print("3.保留資料並留給跑圖表用")
         while True:
             try:
                 chosen = int(input("請輸入1到3之間的數字："))
@@ -80,7 +80,7 @@ class ExeSwitch:
 
     def print_execution_rescheudle(self):
         print("1.則一方法執行(會跑TimeTable圖)")
-        print("2.跑統計圖表")
+        print("2.保留資料並留給跑圖表用")
         while True:
             try:
                 chosen = int(input("請輸入1到2之間的數字："))

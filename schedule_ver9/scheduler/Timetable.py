@@ -31,8 +31,6 @@ class TimeTable:
                 else:
                     self.time_table[time] = temp_dict[time]
 
-
-
     def fail_flow_refilt(self, fail_flow):
         pop_dic = {}
 

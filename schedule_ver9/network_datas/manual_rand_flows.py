@@ -17,7 +17,7 @@ def main():
     if is_valid_flow_data(flow_data):
         try:
            
-            with open("flow_data.json", 'w') as json_file:
+            with open("flow_data_manual.json", 'w') as json_file:
                 json.dump(flow_data, json_file, indent=2)
             print("數據成功存成'flow_data.json'")
         except Exception as e:
@@ -27,9 +27,9 @@ def main():
 
 def rand_set_flows():
     flow_data = {}
-    flow_quantity = random.randint(20, 20)
+    amount = int(input("請輸入要隨機產生多少flows:"))
     
-    for flow in range(1, flow_quantity+1):
+    for flow in range(1, amount+1):
         flow_data.update(rand_attribute(flow))
     return flow_data
 
@@ -42,13 +42,13 @@ def rand_attribute(flow):
     while dst_rand == src_rand:
         dst_rand = random.choice(devices)
         
-    start_time_rand = random.randint(0, 5)
-    period_rand = random.randint(10, 16)
-    times_rand = random.randint(10, 12)
-    size_rand = random.randint(2, 3)
-    deadline_rand = random.randint(10, 12)
+    start_time_rand = random.randint(0, 5)    # 0, 20
+    period_rand = random.randint(10, 20)      # 15, 25
+    times_rand = random.randint(5, 7)         # 5, 7
+    size_rand = random.randint(2, 3)          # 2, 3
+    deadline_rand = random.randint(10, 15)    # 15,20
     while deadline_rand > period_rand:
-        deadline_rand = random.randint(10, 12)
+        deadline_rand = random.randint(10, 15)# 15,20
     flow_dic = {flow:{"Src":src_rand, "Dst":dst_rand, "StartTime":start_time_rand, "Period":period_rand, "Times":times_rand, "Size":size_rand, "Deadline":deadline_rand}}
     return flow_dic
 

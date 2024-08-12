@@ -11,16 +11,17 @@ class ScheduleMiddle:
         self.direction = direction
 
     def schedule_middle(self, flow_PR_sortlist):
+    #    print(f"------------------------Schedule_Middle-----------------------")
         if self.driving_mode == "Time":
-            print(f"Time_{self.direction}")
+    #        print(f"Time_{self.direction}")
             self.time_driving(flow_PR_sortlist)
         elif self.driving_mode == "Flow":
-            print(f"Flow_{self.direction}")
+    #        print(f"Flow_{self.direction}")
             self.flow_driving(flow_PR_sortlist)
         else:
-            self.original(flow_PR_sortlist)
+            print("模式指定失敗")
             
-        self.time_table_maintainer.middle_fail_flows = self.fail_flows
+    #    print(f"-----------------------------------------------------------------")
 
     def time_driving(self, flow_PR_sortlist):
         max_time = Genarators.get_max_time(self.flow_dic)
@@ -52,46 +53,7 @@ class ScheduleMiddle:
                         if target_flow == packet["Flow"]:
                             self.set_flows(time, step, link1, packet)
     #排序:flow_name、driving_mode:time、direction：forward
-    def original(self, flow_PR_sortlist):
-        #計算max_time
-        max_time = Genarators.get_max_time(self.flow_dic)
-
-        for time in range(0,max_time):
-            if self.time_table.get(time) != None:
-                for target_flow in flow_PR_sortlist:
-                    #依據當前時間所佔據在link上的Packets，取得他下一條是哪條link，並排程他近期可以占用的時間
-                    for link1, packet in self.time_table[time].items():
-                        if target_flow == packet["Flow"]:
-                            target_time = time + 1
-                            next_link = ()
-                            #取得下一條link
-                            for link2 in self.flow_paths_dic[packet["Flow"]]:
-                                if link2["Ingress"] == link1[1]:
-                                    next_link = (link2["Ingress"], link2["Egress"])
-                                    break
-                            #如果還沒到結束路徑(開始排他可以next_link最快可以占用的時間)
-                            if next_link:
-                                not_set = True
-                                while not_set:
-                                    if target_time >= packet["Tolerant"]:
-                                        if packet["Flow"] not in self.fail_flows:
-                                            self.fail_flows.append(packet["Flow"])   
-                                        not_set = False
-                                    #如果time+1沒有被建立
-                                    elif self.time_table.get(target_time) == None:
-                                        #建立link並將封包丟到time_slot裡面
-                                        self.time_table[target_time] = {}
-                                        self.time_table[target_time].update({next_link:packet})
-                                        not_set = False
-                                    else:
-                                        #如果time+1已被建立但是裡面沒有該link(亦即無衝突)
-                                        if self.time_table[target_time].get(next_link) == None:
-                                            self.time_table[target_time][next_link] = packet
-                                            not_set = False
-                                        #如果time+1已被建立，且裡面有該Link存在(發生衝突)
-                                        else:
-                                            target_time += 1
-
+   
     def set_deadline(self, flow_PR_sortlist):
         deadline_dic = {}
         for target_flow in flow_PR_sortlist:
@@ -150,6 +112,7 @@ class ScheduleMiddle:
     def set_packet_next(self, time, step, next_link, packet):
 
         target_time = time + step
+        
         if next_link:
             not_set = True
             while not_set:

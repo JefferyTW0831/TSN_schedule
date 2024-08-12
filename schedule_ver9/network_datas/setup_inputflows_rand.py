@@ -45,13 +45,13 @@ class SetInputFlowsRand:
         while dst_rand == src_rand:
             dst_rand = random.choice(devices)
             
-        start_time_rand = random.randint(0, 5)
-        period_rand = random.randint(10, 16)
-        times_rand = random.randint(10, 12)
-        size_rand = random.randint(2, 3)
-        deadline_rand = random.randint(10, 12)
+        start_time_rand = random.randint(0, 20)
+        period_rand = random.randint(15, 25)
+        times_rand = random.randint(5, 7)
+        size_rand = random.randint(1, 3)
+        deadline_rand = random.randint(15, 20)
         while deadline_rand > period_rand:
-            deadline_rand = random.randint(10, 12)
+            deadline_rand = random.randint(15, 20)
         flow_dic = {flow:{"Src":src_rand, "Dst":dst_rand, "StartTime":start_time_rand, "Period":period_rand, "Times":times_rand, "Size":size_rand, "Deadline":deadline_rand}}
         return flow_dic
 

@@ -4,10 +4,10 @@ import network_datas.setup_inputflows_rand
 import new_scheduler.Genarators as Genarators 
 import matplotlib.pyplot as plt
 from PyQt5.QtWidgets import QApplication
+from network_datas.setup_inputflows_rand import SetInputFlowsRand
 from network_datas.InputFlow import InputFlow
 from network_datas.Topology import Topology
 from new_scheduler.Demo import Demo
-import matplotlib.pyplot as plt
 
 mode = {
     1:{"driving_mode":"Original", "direction":"Forward"},
@@ -28,8 +28,11 @@ sort_mode = {
 class RunData:
     def __init__(self, object_chosen):
         self.object_chosen = object_chosen
+        self.rand_flows = SetInputFlowsRand()
+        self.input_flows = None
 
     def run(self):
+        self.input_flows = int(input("輸入資料流數量："))
         with open("測試_沒common_link_包假假假.csv", "w", newline='') as file:
             csv_writer = csv.writer(file)
             # 如果文件是空的，寫入標題行
@@ -44,7 +47,7 @@ class RunData:
                 self.write_output_flows_csv(scheduled_data, csv_writer, times)
 
     def scheulde_working(self, sort_choose):
-        network_datas.setup_inputflows_rand.main()
+        self.rand_flows.run(self.input_flows)
         
         input_flow = InputFlow()                                       
         flow_dic = input_flow.run()
@@ -97,8 +100,12 @@ class RunData:
 class RunDemo:
     def __init__(self, object_chosen):
         self.object_chosen = object_chosen
+        self.rand_flows = SetInputFlowsRand()
+        self.input_flows = None
 
     def run(self):
+        self.input_flows = int(input("輸入資料流數量："))
+        self.rand_flows.run(self.input_flows)
         input_flow = InputFlow()                                       
         flow_dic = input_flow.run()
         topology = Topology(flow_dic)                             
@@ -159,12 +166,16 @@ class RunDemo:
                 print("請輸入有效的數字。")
         return chosen
 
-class RunMatPlotLibOne:
+class RunMatPlotLibTense:
     def __init__(self, object_chosen):
         self.object_chosen = object_chosen
+        self.rand_flows = SetInputFlowsRand()
+        self.input_flows = None
     
     def run(self):
         data_dict = {}
+        self.input_flows = int(input("輸入資料流數量："))
+        self.rand_flows.run(self.input_flows)
         loop_times = int(input(f"輸入執行次數 : "))
         sort_choose = self.sort_mode_chosen()
         for times in range(1, loop_times+1):
@@ -173,6 +184,7 @@ class RunMatPlotLibOne:
                 if scheduler_name not in data_dict:
                     data_dict.update({scheduler_name:data["success_flows"]})
                 else:
+                    
                     prev_data = data_dict[scheduler_name]
                     next_data = data["success_flows"]
                     new_data = prev_data + next_data
@@ -239,11 +251,15 @@ class RunMatPlotLibOne:
                 print("請輸入有效的數字。")
         return chosen
     
-class RunMatPlotLibTwo:
+class RunMatPlotLibReschedule:
     def __init__(self, object_chosen):
         self.object_chosen = object_chosen
+        self.rand_flows = SetInputFlowsRand()
+        self.input_flows = None
 
     def run(self):
+        self.input_flows = int(input("輸入資料流數量："))
+        self.rand_flows.run(self.input_flows)
         input_flow = InputFlow()                                       
         flow_dic = input_flow.run()
         topology = Topology(flow_dic)                             
@@ -251,36 +267,37 @@ class RunMatPlotLibTwo:
 
         fig, ax = plt.subplots(2,2,constrained_layout = True)
         data_dict = {}
+        sort_mode_num = self.sort_mode_chosen()
 
-        for sort_mode_num in(1,5):
-
-            for i in range(1, 6):
-                print(f"{mode[i]['driving_mode']}_{mode[i]['direction']}")
-                scheduler = self.object_chosen(topology, 2, mode[i]["driving_mode"], mode[i]["direction"],sort_mode[sort_mode_num])
-                
-                #得到時間表
-                scheudled_data = scheduler.scheduling()
+        for i in range(1, 6):
+            print(f"{mode[i]['driving_mode']}_{mode[i]['direction']}")
+            scheduler = self.object_chosen(topology, 2, mode[i]["driving_mode"], mode[i]["direction"],sort_mode[sort_mode_num])
             
-                flow, max_time = Genarators.get_last_time(scheudled_data)
+            #得到時間表
+            scheudled_data = scheduler.scheduling()
+        
+            flow, max_time = Genarators.get_last_time(scheudled_data)
 
-                data_dict[f"scheduler{i}"] = max_time
+            data_dict[f"scheduler{i}"] = max_time
 
-            mapping = {"scheduler1":"Original",
-                    "scheduler2":"Time_forward",
-                    "scheduler3":"Time_backward", 
-                    "scheduler4":"Flow_forward", 
-                    "scheduler5":'Flow_backward'
-            }
+        mapping = {"scheduler1":"Original",
+                "scheduler2":"Time_forward",
+                "scheduler3":"Time_backward", 
+                "scheduler4":"Flow_forward", 
+                "scheduler5":'Flow_backward'
+        }
 
-            #五種scheduler + max_time :: new_dict = {scheduler1 : max_time, ...}
-            new_dict = {mapping[key]: value for key, value in data_dict.items()}
+        #五種scheduler + max_time :: new_dict = {scheduler1 : max_time, ...}
+        new_dict = {mapping[key]: value for key, value in data_dict.items()}
 
-            schedulers = list(new_dict.keys())
-            max_time = list(new_dict.values())
-            
-            x, y =self.dec_to_bin(sort_mode_num)
-            ax[x,y].set_title(sort_mode[sort_mode_num])
-            ax[x,y].plot(schedulers, max_time, 'ro-')
+        schedulers = list(new_dict.keys())
+        max_time = list(new_dict.values())
+        
+        plt.bar(schedulers, max_time)
+
+        plt.title('Scheduler')
+        plt.xlabel('Schedulers')
+        plt.ylabel('Max_Time')
 
 
         plt.show()       
@@ -288,3 +305,20 @@ class RunMatPlotLibTwo:
 
     def dec_to_bin(self, num):
         return num/2, num%2
+    
+    def sort_mode_chosen(self):
+        print(f"選擇初始篩選方法:")
+        print("1.原始(按照flow名稱)")
+        print("2.按照權重")
+        print("3.先找出衝突組合，每個組合裡擁有最多的flows的子組合將勝選")
+        print("4.包容力排序")
+        while True:
+            try:
+                chosen = int(input("請輸入1到4之間的數字："))
+                if 1 <= chosen <= 4:
+                    break
+                else:
+                    print("請輸入1到4之間的數字。")
+            except ValueError:
+                print("請輸入有效的數字。")
+        return chosen

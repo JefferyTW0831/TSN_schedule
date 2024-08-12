@@ -11,5 +11,8 @@ class InputFlow:
             self.flow_dic = json.load(json_file)
             return self.flow_dic
         
-    
+    def run_manual(self):
+        with open('network_datas/flow_data_manual.json', 'r') as json_file:
+            self.flow_dic = json.load(json_file)
+            return self.flow_dic
 

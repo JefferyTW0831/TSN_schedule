@@ -17,17 +17,30 @@ class Topology:
                     self.links[(src, dst)] = {}
             
         except:
-            raise ValueError(f"Invalid data, please check your \"list.txt\" file")
+            raise ValueError(f"Invalid data, please check your \"links.txt\" file")
 
     def create_reverse_links(self): 
         reverse_links = {}                                                        #建立每個links(topology.links)
         for counter, (link_name, link_data) in enumerate(self.links.items(), start=1):
             src = link_name[0]
             dst = link_name[1]
-            reverse_links[(dst, src)] = {}     #建立每個反向links
+            reverse_links[(dst, src)] = {}                                                      #建立每個反向links
 
         # 合併 reverse_links 到 links
         self.links.update(reverse_links)
+
+
+    #用來排link順序(Di,SWj)..(SWx,SWy)..(SWn,SWm)
+    #  def sort_keys(self):
+    #     def key_function(tup):
+    #         if 'D' in tup[0]:
+    #             return 0
+    #         elif 'D' in tup[1]:
+    #             return 2
+    #         else:
+    #             return 1
+        
+    #     return sorted(self.link, key=key_function)
 
     def routing(self):                                                                      #建立路徑(topology.path_dic)
         for flow_id, key in self.flow_dic.items():
